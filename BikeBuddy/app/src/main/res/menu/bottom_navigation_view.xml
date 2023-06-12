@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title=" "
+        android:id="@+id/Gonav"
+        android:icon="@drawable/go_icon"/>
+    <item android:title=" "
+        android:id="@+id/Community"
+        android:icon="@drawable/community_icon"/>
+    <item android:title=" "
+        android:id="@+id/Account"
+        android:icon="@drawable/account_icon"/>
+</menu>
