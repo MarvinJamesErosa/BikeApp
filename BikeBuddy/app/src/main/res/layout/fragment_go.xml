@@ -1,25 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00EA26"
+    android:background="@color/splashscreen"
+    android:orientation="vertical"
     tools:context=".Go">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:src="@drawable/ic_launcher_foreground" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/mainScreenContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/splashscreen"
+            android:layout_weight="1">
+
+            <!-- Layout for Main Screen -->
+            <Button
+                android:id="@+id/exploreButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/splashscreen"
+                android:onClick="goToMainScreen"
+                android:text="Explore"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/sharedRoutesScreenContainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <!-- Layout for SharedRoutesScreen -->
+            <Button
+                android:id="@+id/sharedRoutesButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/splashscreen"
+                android:onClick="showSharedRoutesDialog"
+                android:text="Shared Routes"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
+    </LinearLayout>
 
     <fragment
         class="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/mapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <ImageButton
-        android:id="@+id/imageFilterButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10sp"
-        android:layout_marginBottom="70sp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/baseline_location_searching_24" />
-
-</FrameLayout>
+</LinearLayout>

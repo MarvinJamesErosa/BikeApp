@@ -13,6 +13,12 @@
         android:theme="@style/Theme.App.startScreen"
         tools:targetApi="31">
         <activity
+            android:name=".SharedRouteScreen"
+            android:exported="false" />
+        <activity
+            android:name=".ExploreScreen"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.App.startScreen">
@@ -22,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${googleMapsAPIKey}" />
