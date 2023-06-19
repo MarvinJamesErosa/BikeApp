@@ -16,9 +16,15 @@ import android.widget.Button
 import com.example.bikebuddy.Account
 import com.example.bikebuddy.Community
 import com.example.bikebuddy.Go
+import com.google.android.gms.maps.CameraUpdate
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 
 
 class MainActivity : AppCompatActivity() {
+
+    private val locationProvider = LocationProvider(this)
+    private val permissionManager = PermissionsManager(this, locationProvider)
 
     private lateinit var binding: ActivityMainBinding
     private var sharedRoutesPopup: PopupWindow? = null
@@ -43,6 +49,17 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+    }
+    fun onMapReady(googleMap: GoogleMap) {
+
+        locationProvider.liveLocation.observe(this) { latLng ->
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14f))
+        }
+
+        val permissionManager = PermissionsManager(this, locationProvider)
+        permissionManager.requestUserLocation()
+
+        googleMap.uiSettings.isZoomControlsEnabled = true
     }
 
     private fun replaceFragment(fragment: Fragment) {
