@@ -67,11 +67,4 @@
         android:elevation="20dp"
         android:background="@drawable/searchviewicon" />
 
-    <fragment
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/mapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/searchviewlocation" />
-
 </RelativeLayout>
