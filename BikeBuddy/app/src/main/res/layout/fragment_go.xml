@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/splashscreen"
-    android:orientation="vertical"
     tools:context=".Go">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="39dp"
+        android:background="@color/splashscreen"
         android:src="@drawable/ic_launcher_foreground" />
 
     <LinearLayout
+        android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="38dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/imageView">
 
         <FrameLayout
             android:id="@+id/mainScreenContainer"
@@ -57,11 +57,21 @@
         </FrameLayout>
     </LinearLayout>
 
+    <SearchView
+        android:id="@+id/searchviewlocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonLayout"
+        android:queryHint="Where to?"
+        android:iconifiedByDefault="false"
+        android:elevation="20dp"
+        android:background="@drawable/searchviewicon" />
+
     <fragment
         class="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/mapFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchviewlocation" />
 
-</LinearLayout>
+</RelativeLayout>
