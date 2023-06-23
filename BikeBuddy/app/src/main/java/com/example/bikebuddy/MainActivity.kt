@@ -83,6 +83,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             true
         }
+        val recenterButton = findViewById<Button>(R.id.recenterButton)
+        recenterButton.setOnClickListener {
+            centerMapToUserLocation()
+        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
@@ -93,6 +97,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.isMyLocationEnabled = true
         setUpLocationCallback()
         startLocationUpdates()
+        centerMapToUserLocation()
     }
 
     private fun checkForLocationPermission() {
@@ -117,7 +122,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (!zoomedToLocation && locationResult.locations.isNotEmpty())  {
                         val currentLatLong = LatLng(location.latitude, location.longitude)
                         zoomedToLocation = true
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, DEFAULT_ZOOM))
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, DEFAULT_ZOOM))
                     }
                 }
             }
@@ -155,20 +160,38 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOCATION_SETTINGS_REQUEST_CODE) {
-           startLocationUpdates()
+            if (isLocationEnabled()) {
+                centerMapToUserLocation()
+            } else {
+                startLocationUpdates()
+            }
         }
     }
 
-    private fun showLocationServicesRequiredDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Location Services Required")
-            .setMessage("Please enable location services to show your current location.")
-            .setPositiveButton("OK") { _, _ ->
-                val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivityForResult(settingsIntent, LOCATION_SETTINGS_REQUEST_CODE)
+    private fun centerMapToUserLocation() {
+        checkForLocationPermission()
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                val latLng = LatLng(location.latitude, location.longitude)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
+            } ?: run {
+              startLocationUpdates()
             }
-            .setCancelable(false)
-            .show()
+        }
+    }
+    override fun onPause() {
+        super.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback) //Stops location updates when the activity is paused to save battery
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     private fun replaceFragment(fragment: Fragment) {
