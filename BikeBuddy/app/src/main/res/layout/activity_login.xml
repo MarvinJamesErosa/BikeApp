@@ -87,7 +87,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_username_input" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_create_btn"
         android:layout_width="0dp"
         android:layout_height="50dp"
@@ -95,6 +95,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/login_btn_style"
+        android:backgroundTint="@color/splashscreen"
         android:text="Log in"
         android:textAlignment="center"
         android:textAllCaps="false"
@@ -102,7 +103,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_password_input" />
+        app:layout_constraintTop_toBottomOf="@+id/login_password_input" >
+
+    </androidx.appcompat.widget.AppCompatButton>
 
 
     <TextView
@@ -142,7 +145,7 @@
         app:layout_constraintTop_toBottomOf="@+id/login_forgot_password_btn"
         app:srcCompat="@drawable/login_or_text" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/login_google_btn"
         android:layout_width="0dp"
         android:layout_height="50dp"
@@ -150,16 +153,19 @@
         android:layout_marginTop="-25dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/login_google_style"
+        android:backgroundTint="@color/splashscreen"
         android:drawableLeft="@drawable/googleg_standard_color_18"
         android:drawablePadding="8dp"
         android:paddingStart="70dp"
         android:text="Log in with Google"
+        android:textColor="@color/white"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_or_text" />
+        app:layout_constraintTop_toBottomOf="@+id/login_or_text" >
+    </androidx.appcompat.widget.AppCompatButton>
 
 
 

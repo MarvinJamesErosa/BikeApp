@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/Gonav"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,14 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="39dp"
         android:background="@color/splashscreen"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/buttonLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="38dp"
         android:orientation="horizontal"
-        android:layout_below="@id/imageView">
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <FrameLayout
             android:id="@+id/mainScreenContainer"
@@ -32,7 +35,7 @@
                 android:id="@+id/exploreButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/splashscreen"
+                android:backgroundTint="@color/splashscreen"
                 android:onClick="goToMainScreen"
                 android:text="Explore"
                 android:textColor="@color/white" />
@@ -43,6 +46,7 @@
             android:id="@+id/sharedRoutesScreenContainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="@color/splashscreen"
             android:layout_weight="1">
 
             <!-- Layout for SharedRoutesScreen -->
@@ -50,7 +54,7 @@
                 android:id="@+id/sharedRoutesButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/splashscreen"
+                android:backgroundTint="@color/splashscreen"
                 android:onClick="showSharedRoutesDialog"
                 android:text="Shared Routes"
                 android:textColor="@color/white" />
@@ -61,27 +65,28 @@
 
     <SearchView
         android:id="@+id/searchviewlocation"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonLayout"
         android:queryHint="Where to?"
         android:iconifiedByDefault="false"
         android:elevation="20dp"
-        android:background="@drawable/searchviewicon" />
+        android:background="@drawable/searchviewicon"
+        app:layout_constraintTop_toBottomOf="@id/buttonLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/recenterButton"
         android:layout_width="51dp"
         android:layout_height="37dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="11dp"
         android:background="@drawable/baseline_location_searching_24"
         android:onClick="recenterMap"
-        android:textColor="@color/white" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+    </androidx.appcompat.widget.AppCompatButton>
 
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

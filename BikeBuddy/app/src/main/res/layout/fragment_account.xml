@@ -19,7 +19,9 @@
         android:id="@+id/navigateToLoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/splashscreen"
         android:text="Go to Login"
+        android:textColor="@color/white"
         android:layout_marginTop="16dp"/>
 
 
