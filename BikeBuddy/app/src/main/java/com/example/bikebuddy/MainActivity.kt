@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog
 import com.example.bikebuddy.Account
 import com.example.bikebuddy.Community
 import com.example.bikebuddy.Go
+import com.example.bikebuddy.LoginActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,8 +35,6 @@ import com.google.android.gms.location.*
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
-
-
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -89,7 +88,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
     }
+
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -175,10 +177,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 val latLng = LatLng(location.latitude, location.longitude)
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
             } ?: run {
-              startLocationUpdates()
+                startLocationUpdates()
             }
         }
     }
+
     override fun onPause() {
         super.onPause()
         fusedLocationClient.removeLocationUpdates(locationCallback) //Stops location updates when the activity is paused to save battery

@@ -7,9 +7,12 @@
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/BottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <fragment
             android:id="@+id/mapFragment"
@@ -19,9 +22,11 @@
 
         <Button
             android:id="@+id/recenterButton"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:text="Recenter" />
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/baseline_location_searching_24"/>
+
 
 
     </FrameLayout>
@@ -37,6 +42,5 @@
         app:itemIconTint="@color/iconcolor_selector"
         app:menu="@menu/bottom_navigation_view"
         style="@style/BottomNavigationViewStyle" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

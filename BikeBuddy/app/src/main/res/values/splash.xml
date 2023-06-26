@@ -10,4 +10,5 @@
         <item name="android:background">#F2FFFFFF</item>
         <item name="itemIconTint">@color/iconcolor_selector</item>
     </style>
+
 </resources>
