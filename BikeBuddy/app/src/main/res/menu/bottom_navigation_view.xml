@@ -3,11 +3,11 @@
 
     <item android:title=" "
         android:id="@+id/Gonav"
-        android:icon="@drawable/go_icon"/>
+        android:icon="@drawable/go"/>
     <item android:title=" "
         android:id="@+id/Community"
-        android:icon="@drawable/community_icon"/>
+        android:icon="@drawable/community"/>
     <item android:title=" "
         android:id="@+id/Account"
-        android:icon="@drawable/account_icon"/>
+        android:icon="@drawable/account"/>
 </menu>

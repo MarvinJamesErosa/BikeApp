@@ -9,10 +9,11 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="39dp"
+        android:layout_height="30dp"
         android:background="@color/splashscreen"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/bikebuddy"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
         android:id="@+id/buttonLayout"
@@ -67,13 +68,16 @@
         android:id="@+id/searchviewlocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:queryHint="Where to?"
-        android:iconifiedByDefault="false"
-        android:elevation="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp"
         android:background="@drawable/searchviewicon"
-        app:layout_constraintTop_toBottomOf="@id/buttonLayout"
+        android:iconifiedByDefault="false"
+        android:queryHint="Where to?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/buttonLayout" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/recenterButton"
