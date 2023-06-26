@@ -82,11 +82,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             true
         }
-        val recenterButton = findViewById<Button>(R.id.recenterButton)
-        recenterButton.setOnClickListener {
-            centerMapToUserLocation()
-        }
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
     }
@@ -170,7 +165,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun centerMapToUserLocation() {
+    fun centerMapToUserLocation() {
         checkForLocationPermission()
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             location?.let {
