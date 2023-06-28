@@ -21,11 +21,13 @@ import android.widget.PopupWindow
 import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams
 import android.widget.Button
+import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
 import com.example.bikebuddy.Account
 import com.example.bikebuddy.Community
 import com.example.bikebuddy.Go
 import com.example.bikebuddy.LoginActivity
+import com.example.bikebuddy.SearchListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,8 +38,19 @@ import com.google.android.gms.location.*
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FetchPlaceResponse
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
+import com.google.android.libraries.places.api.net.PlacesClient
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
 
     private lateinit var binding: ActivityMainBinding
     private var sharedRoutesPopup: PopupWindow? = null
@@ -45,6 +58,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
     private lateinit var locationCallback: LocationCallback
+    private lateinit var searchView: SearchView
+    private lateinit var placesClient: PlacesClient
+
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 145
@@ -62,6 +78,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    override fun onSearch(query: String) {
+        convertLocationToLatLng(query)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -76,6 +96,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
         replaceFragment(Go())
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         val mapFrag = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFrag.getMapAsync(this)
 
@@ -87,11 +109,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             true
         }
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
+        Places.initialize(applicationContext, "AIzaSyBoBH22iT7aNkaXSEEP2UyL8kdcWCaVtcY")
+        placesClient = Places.createClient(this)
     }
-
-
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -100,6 +120,48 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setUpLocationCallback()
         startLocationUpdates()
         centerMapToUserLocation()
+    }
+    private fun convertLocationToLatLng(location: String) {
+        val request = FindAutocompletePredictionsRequest.builder()
+            .setQuery(location)
+            .build()
+
+        placesClient.findAutocompletePredictions(request)
+            .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
+                if (response.autocompletePredictions.isNotEmpty()) {
+                    val prediction = response.autocompletePredictions[0]
+                    val placeId = prediction.placeId
+
+                    val placeFields = listOf(Place.Field.LAT_LNG)
+
+                    val placeRequest = FetchPlaceRequest.builder(placeId, placeFields)
+                        .build()
+
+                    placesClient.fetchPlace(placeRequest)
+                        .addOnSuccessListener { response: FetchPlaceResponse ->
+                            val place = response.place
+                            val latLng = place.latLng
+                            val latitude = latLng?.latitude
+                            val longitude = latLng?.longitude
+
+                            if (latitude != null && longitude != null) {
+                                val cameraPosition = CameraPosition.Builder()
+                                    .target(LatLng(latitude, longitude))
+                                    .zoom(DEFAULT_ZOOM)
+                                    .build()
+                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                            }
+                        }
+                        .addOnFailureListener { exception: Exception ->
+                            // Handle the error
+                        }
+                } else {
+                    // No predictions found for the location, handle accordingly
+                }
+            }
+            .addOnFailureListener { exception: Exception ->
+                // Handle the error
+            }
     }
 
     private fun checkForLocationPermission() {
@@ -118,8 +180,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setUpLocationCallback() {
         locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult ?: return
+            override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
                     if (!zoomedToLocation && locationResult.locations.isNotEmpty())  {
                         val currentLatLong = LatLng(location.latitude, location.longitude)
