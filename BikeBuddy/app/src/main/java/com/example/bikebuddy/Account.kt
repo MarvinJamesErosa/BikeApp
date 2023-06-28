@@ -15,7 +15,7 @@ class Account : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
-        val navigateToLoginButton: Button = view.findViewById(R.id.navigateToLoginButton)
+        val navigateToLoginButton: Button = view.findViewById(R.id.account_login_btn)
 
         navigateToLoginButton.setOnClickListener {
             // Handle the button click event
