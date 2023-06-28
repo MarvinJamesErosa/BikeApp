@@ -143,6 +143,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
                             val latLng = place.latLng
                             val latitude = latLng?.latitude
                             val longitude = latLng?.longitude
+                            val capitalizedLocation = location.split(" ")
+                                .joinToString(" ") { it.replaceFirstChar { char -> if (char.isLowerCase()) char.titlecase() else char.toString() } }
 
                             if (latitude != null && longitude != null) {
                                 val cameraPosition = CameraPosition.Builder()
@@ -150,6 +152,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
                                     .zoom(DEFAULT_ZOOM)
                                     .build()
                                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                                mMap.addMarker(
+                                    MarkerOptions()
+                                        .position(LatLng(latitude, longitude))
+                                        .title(capitalizedLocation)
+                                )
                             }
                         }
                         .addOnFailureListener { exception: Exception ->
