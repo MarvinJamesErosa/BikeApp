@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
@@ -63,6 +64,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Lock the orientation to portrait
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         runBlocking {
             installSplashScreen()
             delay(1500)

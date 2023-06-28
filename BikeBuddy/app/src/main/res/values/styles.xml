@@ -11,4 +11,8 @@
         <item name="itemIconTint">@color/iconcolor_selector</item>
     </style>
 
+    <style name="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
