@@ -18,7 +18,8 @@
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,7 +38,8 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.App.startScreen">
+            android:theme="@style/Theme.App.startScreen"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".LoginActivity"

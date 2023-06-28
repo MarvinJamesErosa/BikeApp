@@ -13,6 +13,7 @@
           android:pathData="M315,0L1125,0L1125,810L315,810ZM315,0"
           android:fillColor="#ffffff"
           android:fillType="nonZero"/>
+
     </group>
   </group>
   <group>

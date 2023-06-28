@@ -21,19 +21,19 @@
             android:layout_height="match_parent" />
 
 
-
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/BottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        app:itemIconSize="@android:dimen/app_icon_size"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:itemIconTint="@color/iconcolor_selector"
+        app:itemTextColor="@color/titlecolor_selector"
         app:menu="@menu/bottom_navigation_view"
         style="@style/BottomNavigationViewStyle" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
