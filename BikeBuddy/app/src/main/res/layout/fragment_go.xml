@@ -8,28 +8,34 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:background="@color/splashscreen"
-        android:src="@drawable/bikebuddy"
+        android:paddingStart="80dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="80dp"
+        android:paddingBottom="18dp"
+        android:src="@drawable/topbar_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
         android:id="@+id/buttonLayout"
         android:layout_width="0dp"
-        android:layout_height="38dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/imageView">
 
         <FrameLayout
             android:id="@+id/mainScreenContainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/splashscreen"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/splashscreen">
 
             <!-- Layout for Main Screen -->
             <Button
@@ -47,8 +53,8 @@
             android:id="@+id/sharedRoutesScreenContainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/splashscreen"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/splashscreen">
 
             <!-- Layout for SharedRoutesScreen -->
             <Button
@@ -64,20 +70,36 @@
 
     </LinearLayout>
 
-    <SearchView
-        android:id="@+id/searchviewlocation"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="394dp"
         android:background="@drawable/searchviewicon"
-        android:iconifiedByDefault="false"
-        android:queryHint="Where to?"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/recenterButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonLayout" />
+        app:layout_constraintTop_toBottomOf="@id/buttonLayout">
+
+        <android.widget.SearchView
+            android:id="@+id/searchviewLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:iconifiedByDefault="false"
+            android:queryHint="Where to?" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ScrollView>
+
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/recenterButton"
