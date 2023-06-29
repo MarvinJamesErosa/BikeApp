@@ -131,7 +131,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
         startLocationUpdates()
         centerMapToUserLocation()
     }
+    // Declare a member variable to hold the reference to the previous marker
+    private var previousMarker: Marker? = null
+
     private fun convertLocationToLatLng(location: String) {
+        // Remove the previous marker from the map
+        previousMarker?.remove()
+
         val request = FindAutocompletePredictionsRequest.builder()
             .setQuery(location)
             .build()
@@ -154,14 +160,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
                             val latLng = place.latLng
                             val addressComponents = place.addressComponents?.asList()
                             val country = getAddressComponent(addressComponents, "country")
+                            val city = getAddressComponent(addressComponents, "locality") ?: ""
+
                             val latitude = latLng?.latitude
                             val longitude = latLng?.longitude
 
                             if (latitude != null && longitude != null && name != null) {
-                                val title = if (country != null) {
-                                    "$name, $country"
-                                } else {
-                                    name
+                                val title = when {
+                                    city.isEmpty() || city == place.name || city == country -> {
+                                        if (country != null && country != place.name) {
+                                            "${place.name}, $country"
+                                        } else {
+                                            place.name
+                                        }
+                                    }
+                                    else -> {
+                                        if (country != null && country != place.name) {
+                                            "${place.name}, $city, $country"
+                                        } else {
+                                            "${place.name}, $city"
+                                        }
+                                    }
                                 }
 
                                 val cameraPosition = CameraPosition.Builder()
@@ -169,15 +188,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
                                     .zoom(DEFAULT_ZOOM)
                                     .build()
                                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-                                mMap.addMarker(
+
+                                // Remove the previous marker from the map
+                                previousMarker?.remove()
+
+                                // Add the new marker to the map and store the reference
+                                val newMarker = mMap.addMarker(
                                     MarkerOptions()
                                         .position(LatLng(latitude, longitude))
                                         .title(title)
                                 )
+                                previousMarker = newMarker
                             }
                         }
                         .addOnFailureListener { exception: Exception ->
-                            // Handle the error
                             showDialog("Location Not Found", "The location cannot be found or does not exist.")
                         }
                 } else {
@@ -186,7 +210,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
                 }
             }
             .addOnFailureListener { exception: Exception ->
-                // Handle the error
                 showDialog("Error", "Failed to fetch location.")
             }
     }
