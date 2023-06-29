@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AddressComponent
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
@@ -109,8 +110,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
             }
             true
         }
-        Places.initialize(applicationContext, "AIzaSyBoBH22iT7aNkaXSEEP2UyL8kdcWCaVtcY")
-        placesClient = Places.createClient(this)
+        try {
+            val appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+            val bundle = appInfo.metaData
+            val apiKey = bundle.getString("com.google.android.places.API_KEY")
+
+            // Initialize Places with the API key
+            Places.initialize(applicationContext, apiKey)
+            placesClient = Places.createClient(this)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -132,7 +142,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
                     val prediction = response.autocompletePredictions[0]
                     val placeId = prediction.placeId
 
-                    val placeFields = listOf(Place.Field.LAT_LNG)
+                    val placeFields = listOf(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS)
 
                     val placeRequest = FetchPlaceRequest.builder(placeId, placeFields)
                         .build()
@@ -140,13 +150,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
                     placesClient.fetchPlace(placeRequest)
                         .addOnSuccessListener { response: FetchPlaceResponse ->
                             val place = response.place
+                            val name = place.name
                             val latLng = place.latLng
+                            val addressComponents = place.addressComponents?.asList()
+                            val country = getAddressComponent(addressComponents, "country")
                             val latitude = latLng?.latitude
                             val longitude = latLng?.longitude
-                            val capitalizedLocation = location.split(" ")
-                                .joinToString(" ") { it.replaceFirstChar { char -> if (char.isLowerCase()) char.titlecase() else char.toString() } }
 
-                            if (latitude != null && longitude != null) {
+                            if (latitude != null && longitude != null && name != null) {
+                                val title = if (country != null) {
+                                    "$name, $country"
+                                } else {
+                                    name
+                                }
+
                                 val cameraPosition = CameraPosition.Builder()
                                     .target(LatLng(latitude, longitude))
                                     .zoom(DEFAULT_ZOOM)
@@ -155,20 +172,44 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
                                 mMap.addMarker(
                                     MarkerOptions()
                                         .position(LatLng(latitude, longitude))
-                                        .title(capitalizedLocation)
+                                        .title(title)
                                 )
                             }
                         }
                         .addOnFailureListener { exception: Exception ->
                             // Handle the error
+                            showDialog("Location Not Found", "The location cannot be found or does not exist.")
                         }
                 } else {
                     // No predictions found for the location, handle accordingly
+                    showDialog("Location Not Found", "The location cannot be found or does not exist.")
                 }
             }
             .addOnFailureListener { exception: Exception ->
                 // Handle the error
+                showDialog("Error", "Failed to fetch location.")
             }
+    }
+
+    private fun getAddressComponent(components: List<AddressComponent>?, type: String): String? {
+        components?.forEach { component ->
+            component.types?.forEach { componentType ->
+                if (componentType == type) {
+                    return component.name
+                }
+            }
+        }
+        return null
+    }
+
+
+    private fun showDialog(title: String, message: String) {
+        val alertDialog = AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .create()
+        alertDialog.show()
     }
 
     private fun checkForLocationPermission() {
