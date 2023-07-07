@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/account_topbar_text"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="53dp"
         android:background="@color/splashscreen"
         android:paddingStart="80dp"
         android:paddingTop="18dp"
