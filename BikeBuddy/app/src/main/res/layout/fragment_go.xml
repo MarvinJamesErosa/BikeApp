@@ -86,13 +86,23 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/recenterButton"
-        android:layout_width="84dp"
-        android:layout_height="54dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/re_center_map_icon"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/recenter_btn_style"
+        android:contentDescription="Re-Center Button"
+        android:drawableLeft="@drawable/recenter_logo"
+        android:drawablePadding="25dp"
         android:onClick="recenterMap"
+        android:paddingStart="15dp"
+        android:text="RE-CENTER"
+        android:textAlignment="viewStart"
+        android:textAllCaps="true"
+        android:textColor="@color/splashscreen"
+        android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"></androidx.appcompat.widget.AppCompatButton>
+        app:layout_constraintStart_toStartOf="parent"></androidx.appcompat.widget.AppCompatButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
