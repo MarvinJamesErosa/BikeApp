@@ -27,6 +27,7 @@ import com.example.bikebuddy.Account
 import com.example.bikebuddy.Community
 import com.example.bikebuddy.Go
 import com.example.bikebuddy.LoginActivity
+import com.example.bikebuddy.SearchFragment
 import com.example.bikebuddy.SearchListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -50,17 +51,20 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.SearchListener {
 
     private lateinit var binding: ActivityMainBinding
     private var sharedRoutesPopup: PopupWindow? = null
+
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
     private lateinit var locationCallback: LocationCallback
     private lateinit var searchView: SearchView
     private lateinit var placesClient: PlacesClient
+    private var isBottomNavigationViewVisible = true // Track the visibility state of BottomNavigationView
 
 
     companion object {
@@ -81,6 +85,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
 
     override fun onSearch(query: String) {
         convertLocationToLatLng(query)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,6 +127,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
             e.printStackTrace()
         }
     }
+
+    override fun onBackPressed() {
+        if (!isBottomNavigationViewVisible) {
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.BottomNavigationView)
+            bottomNavigationView.visibility = View.VISIBLE
+            isBottomNavigationViewVisible = true
+        } else {
+            super.onBackPressed()
+        }
+    }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -334,6 +350,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchListener {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.mapFragment, fragment)
         fragmentTransaction.commit()
+
+        // Set the visibility state of BottomNavigationView when replacing the fragment
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.BottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
+        isBottomNavigationViewVisible = true
     }
 
     fun showSharedRoutesDialog(view: View) {

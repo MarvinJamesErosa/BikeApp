@@ -7,27 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.SearchView
+import android.widget.ImageButton
 import com.example.bikebuddy.SearchListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class Go : Fragment() {
+class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
     private var param1: String? = null
     private var param2: String? = null
     private var searchListener: SearchListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        // Check if the parent activity implements the SearchListener interface
-        if (context is SearchListener) {
-            searchListener = context
-        } else {
-            throw IllegalStateException("Parent activity must implement SearchListener")
-        }
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,21 +36,44 @@ class Go : Fragment() {
         recenterButton.setOnClickListener {
             (activity as MainActivity).centerMapToUserLocation()
         }
-        val searchView = view.findViewById<SearchView>(R.id.searchViewLocation)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                // Call the onSearch method of the searchListener
-                searchListener?.onSearch(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                // Called when the user changes the search query text
-                // Perform any actions you want with the updated query text
-                return true
-            }
-        })
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val searchButton = view.findViewById<ImageButton>(R.id.searchButton)
+        searchButton.setOnClickListener {
+            openSearchFragment()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.BottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    override fun onSearch(query: String) {
+        // Update the map in Go fragment with the entered location
+        // You can access the map and update it according to your implementation
+        // For example:
+        // mapFragment.updateLocation(query)
+
+        // Show the Go fragment with the map
+        parentFragmentManager.popBackStack()
+    }
+
+
+    private fun openSearchFragment() {
+        val searchFragment = SearchFragment.newInstance()
+        searchFragment.searchListener = this // Pass the listener to communicate back
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.MainActivity, searchFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {
