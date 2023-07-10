@@ -71,19 +71,27 @@
     </LinearLayout>
 
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/searchButton"
         android:layout_width="360dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/searchviewicon"
+        android:drawableRight="@drawable/quantum_ic_search_grey600_24"
         android:elevation="20dp"
         android:iconifiedByDefault="false"
+        android:onClick="openSearchFragment"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:queryHint="Where to?"
-        app:layout_constraintTop_toBottomOf="@id/buttonLayout"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Where to?"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="#FF757575"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="openSearchFragment" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonLayout" />
 
 
     <androidx.appcompat.widget.AppCompatButton

@@ -42,7 +42,7 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val searchButton = view.findViewById<ImageButton>(R.id.searchButton)
+        val searchButton = view.findViewById<Button>(R.id.searchButton)
         searchButton.setOnClickListener {
             openSearchFragment()
         }
