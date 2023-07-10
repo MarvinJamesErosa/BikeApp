@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
@@ -21,7 +20,6 @@ import android.widget.PopupWindow
 import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
@@ -147,6 +145,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         mMap = googleMap
         checkForLocationPermission()
         mMap.isMyLocationEnabled = true
+        mMap.uiSettings.isMyLocationButtonEnabled = false
         setUpLocationCallback()
         startLocationUpdates()
         centerMapToUserLocation()
@@ -226,6 +225,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                 findViewById<ImageView>(R.id.account_topbar_text).visibility = View.GONE
 
                                 findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
+
+                                findViewById<LinearLayout>(R.id.searchLayout).visibility = View.VISIBLE
                             }
                         }
                         .addOnFailureListener { exception: Exception ->
@@ -253,7 +254,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         return null
     }
     private fun addToRecentSearches(query: String) {
-        val sharedPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences("UserPreferences", MODE_PRIVATE)
         val recentSearches = sharedPrefs.getStringSet("RecentSearches", mutableSetOf<String>())
         recentSearches?.let {
             val newRecentSearches = mutableSetOf<String>()
@@ -365,7 +366,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     }
 
     private fun isLocationEnabled(): Boolean {
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 

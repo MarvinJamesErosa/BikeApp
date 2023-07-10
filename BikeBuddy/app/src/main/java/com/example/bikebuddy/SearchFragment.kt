@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,6 +45,8 @@ class SearchFragment : Fragment() {
         }
         placesClient = Places.createClient(requireContext())
     }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -162,10 +165,16 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val returnButton = view.findViewById<Button>(R.id.returnbutton)
+        returnButton.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.BottomNavigationView)
         bottomNavigationView.visibility = View.GONE
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

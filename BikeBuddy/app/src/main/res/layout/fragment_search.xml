@@ -3,28 +3,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment">
+    tools:context=".SearchFragment"
+    android:background="@color/white">
 
-    <android.widget.SearchView
-        android:id="@+id/searchViewLocation"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/searchviewicon"
-        android:elevation="20dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="Where to?" />
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recentItemsRecyclerView"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/returnbutton"
+            android:layout_width="40dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/baseline_arrow_back_24">
+
+        </androidx.appcompat.widget.AppCompatButton>
+
+
+
+    </FrameLayout>
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="547dp"
-        android:layout_below="@id/searchViewLocation"
-        android:layout_marginTop="-9dp"
-        android:padding="16dp" />
+        android:layout_height="match_parent">
+
+        <android.widget.SearchView
+            android:id="@+id/searchViewLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/searchviewicon"
+            android:elevation="20dp"
+            android:iconifiedByDefault="false"
+            android:queryHint="Where to?" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recentItemsRecyclerView"
+            android:layout_width="361dp"
+            android:layout_height="547dp"
+            android:layout_below="@id/searchViewLocation"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="55dp"
+            android:background="@color/white"
+            android:padding="16dp" />
+
+    </FrameLayout>
+
+
+
 
 
 
