@@ -21,8 +21,12 @@ import android.widget.PopupWindow
 import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.ButtonBarLayout
 import com.example.bikebuddy.Account
 import com.example.bikebuddy.Community
 import com.example.bikebuddy.Go
@@ -213,6 +217,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                         .title(title)
                                 )
                                 previousMarker = newMarker
+
+                                // Hide or remove the views you want to remove
+                                findViewById<Button>(R.id.searchButton).visibility = View.GONE
+                                // Hide or remove other views as needed
+                                findViewById<BottomNavigationView>(R.id.BottomNavigationView).visibility = View.GONE
+
+                                findViewById<ImageView>(R.id.account_topbar_text).visibility = View.GONE
+
+                                findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
                             }
                         }
                         .addOnFailureListener { exception: Exception ->
@@ -227,6 +240,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                 showDialog("Error", "Failed to fetch location.")
             }
     }
+
 
     private fun getAddressComponent(components: List<AddressComponent>?, type: String): String? {
         components?.forEach { component ->
