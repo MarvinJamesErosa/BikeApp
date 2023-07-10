@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
     override fun onSearch(query: String) {
         convertLocationToLatLng(query)
-
+        addToRecentSearches(query)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     // Declare a member variable to hold the reference to the previous marker
     private var previousMarker: Marker? = null
 
-    private fun convertLocationToLatLng(location: String) {
+    fun convertLocationToLatLng(location: String) {
         // Remove the previous marker from the map
         previousMarker?.remove()
 
@@ -204,8 +204,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                     .zoom(DEFAULT_ZOOM)
                                     .build()
                                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-
-                                // Remove the previous marker from the map
                                 previousMarker?.remove()
 
                                 // Add the new marker to the map and store the reference
@@ -240,7 +238,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         }
         return null
     }
-
+    private fun addToRecentSearches(query: String) {
+        val sharedPrefs = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val recentSearches = sharedPrefs.getStringSet("RecentSearches", mutableSetOf<String>())
+        recentSearches?.let {
+            val newRecentSearches = mutableSetOf<String>()
+            newRecentSearches.add(query)
+            newRecentSearches.addAll(it)
+            if (newRecentSearches.size > 5) {
+                newRecentSearches.remove(newRecentSearches.last())
+            }
+            sharedPrefs.edit().putStringSet("RecentSearches", newRecentSearches).apply()
+        }
+    }
 
     private fun showDialog(title: String, message: String) {
         val alertDialog = AlertDialog.Builder(this)

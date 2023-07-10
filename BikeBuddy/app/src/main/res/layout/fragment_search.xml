@@ -6,7 +6,6 @@
     tools:context=".SearchFragment"
     android:background="@color/black">
 
-
     <android.widget.SearchView
         android:id="@+id/searchViewLocation"
         android:layout_width="match_parent"
@@ -19,7 +18,6 @@
         android:elevation="20dp"
         android:iconifiedByDefault="false"
         android:queryHint="Where to?" />
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recentItemsRecyclerView"
