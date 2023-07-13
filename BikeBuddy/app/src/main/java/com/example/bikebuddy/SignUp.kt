@@ -7,7 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.bikebuddy.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
-import java.util.regex.Pattern
+
 
 class SignUp : AppCompatActivity() {
 
@@ -41,7 +41,6 @@ class SignUp : AppCompatActivity() {
                                     startActivity(intent)
                                 } else {
                                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
-                                    Toast.makeText(this, email, Toast.LENGTH_SHORT).show()
                                 }
                             }
                     } else {
@@ -62,10 +61,6 @@ class SignUp : AppCompatActivity() {
     }
 
     private fun isValidEmail(email: String): Boolean {
-        val emailRegex = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
-        val pattern = Pattern.compile(emailRegex)
-        val matcher = pattern.matcher(email)
-        return matcher.matches()
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
-
