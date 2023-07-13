@@ -12,7 +12,7 @@
     <ImageView
         android:id="@+id/login_title"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="250dp"
         android:layout_marginTop="20dp"
         android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,34 +21,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/login_title_text" />
 
-    <ImageView
-        android:id="@+id/login_image"
-        android:layout_width="0dp"
-        android:layout_height="135dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_title"
-        app:srcCompat="@mipmap/login_image_foreground" />
-
-    <ImageView
-        android:id="@+id/login_cta"
-        android:layout_width="0dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_image"
-        app:srcCompat="@drawable/login_cta" />
-
     <EditText
         android:id="@+id/login_username_input"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/login_input_style"
         android:drawableLeft="@drawable/login_usn_image"
@@ -63,8 +41,9 @@
         android:textColorHint="@color/login_text_color"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_cta" />
+        app:layout_constraintTop_toBottomOf="@+id/login_title" />
 
     <EditText
         android:id="@+id/login_password_input"

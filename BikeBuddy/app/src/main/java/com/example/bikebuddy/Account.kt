@@ -16,10 +16,14 @@ class Account : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
         val navigateToLoginButton: Button = view.findViewById(R.id.account_login_btn)
+        val navigateToAboutButton: Button = view.findViewById(R.id.account_about_btn)
 
         navigateToLoginButton.setOnClickListener {
-            // Handle the button click event
             navigateToLogin()
+        }
+
+        navigateToAboutButton.setOnClickListener{
+            navigateToAbout()
         }
 
         return view
@@ -27,6 +31,11 @@ class Account : Fragment() {
 
     private fun navigateToLogin() {
         val intent = Intent(requireContext(), LoginActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToAbout() {
+        val intent = Intent(requireContext(), About::class.java)
         startActivity(intent)
     }
 }

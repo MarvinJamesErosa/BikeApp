@@ -16,28 +16,31 @@
         android:theme="@style/Theme.App.startScreen"
         tools:targetApi="31">
         <activity
+            android:name=".About"
+            android:exported="false"
+            android:theme="@style/Theme.BikeBuddy"/>
+        <activity
             android:name=".SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:exported="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SearchRoute"
             android:exported="false" />
         <activity
             android:name=".SignUp"
             android:exported="false"
-            android:theme="@style/Theme.BikeBuddy"/>
+            android:theme="@style/Theme.BikeBuddy" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.App.startScreen"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.App.startScreen" />
         <activity
             android:name=".LoginActivity"
             android:exported="false"
@@ -46,12 +49,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-
         <meta-data
             android:name="com.google.android.places.API_KEY"
             android:value="@string/places_key" />
-
     </application>
 
 </manifest>
