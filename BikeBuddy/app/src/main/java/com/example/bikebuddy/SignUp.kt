@@ -2,14 +2,14 @@ package com.example.bikebuddy
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.PatternsCompat
 import com.example.bikebuddy.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
-
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 class SignUp : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpBinding
@@ -28,18 +28,31 @@ class SignUp : AppCompatActivity() {
         }
 
         binding.signupCreateBtn.setOnClickListener {
+            val username = binding.signupUsernameInput.text.toString().trim()
             val email = binding.signupEmailInput.text.toString().trim()
             val password = binding.signupPasswordInput.text.toString()
             val confirmPass = binding.signupConfirmPassword.text.toString()
 
-            if (email.isNotEmpty() && password.isNotEmpty() && confirmPass.isNotEmpty()) {
+            if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPass.isNotEmpty()) {
                 if (password == confirmPass) {
                     if (isValidEmail(email)) {
                         firebaseAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    val intent = Intent(this, LoginActivity::class.java)
-                                    startActivity(intent)
+                                    val user: FirebaseUser? = firebaseAuth.currentUser
+                                    val profileUpdates = UserProfileChangeRequest.Builder()
+                                        .setDisplayName(username)
+                                        .build()
+                                    user?.updateProfile(profileUpdates)
+                                        ?.addOnCompleteListener { profileTask ->
+                                            if (profileTask.isSuccessful) {
+                                                val intent = Intent(this, LoginActivity::class.java)
+                                                startActivity(intent)
+                                                finish()
+                                            } else {
+                                                Toast.makeText(this, "Failed to update user profile", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
                                 } else {
                                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
                                 }
@@ -59,6 +72,7 @@ class SignUp : AppCompatActivity() {
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun isValidEmail(email: String): Boolean {
