@@ -1,13 +1,14 @@
 package com.example.bikebuddy
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.PatternsCompat
 import com.example.bikebuddy.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
-
 
 class SignUp : AppCompatActivity() {
 
@@ -27,7 +28,7 @@ class SignUp : AppCompatActivity() {
         }
 
         binding.signupCreateBtn.setOnClickListener {
-            val email = binding.signupEmailInput.text.toString()
+            val email = binding.signupEmailInput.text.toString().trim()
             val password = binding.signupPasswordInput.text.toString()
             val confirmPass = binding.signupConfirmPassword.text.toString()
 
@@ -61,6 +62,7 @@ class SignUp : AppCompatActivity() {
     }
 
     private fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        val pattern = PatternsCompat.EMAIL_ADDRESS
+        return pattern.matcher(email).matches()
     }
 }
