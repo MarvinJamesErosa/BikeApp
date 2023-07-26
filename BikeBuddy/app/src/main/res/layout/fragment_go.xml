@@ -1,9 +1,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/Gonav"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Gonav"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="false"
     tools:context=".Go">
 
 
@@ -11,9 +12,9 @@
         android:id="@+id/searchLayout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:orientation="vertical"
-        android:elevation="20dp"
         android:background="@color/splashscreen"
+        android:elevation="20dp"
+        android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
         <FrameLayout
@@ -35,19 +36,19 @@
                 android:id="@+id/gobackbutton"
                 android:layout_width="27dp"
                 android:layout_height="wrap_content"
-                android:text="X"
-                android:textSize="10dp"
                 android:background="@color/white"
-                android:textColor="@color/black">
+                android:text="X"
+                android:textColor="@color/black"
+                android:textSize="10dp">
 
             </androidx.appcompat.widget.AppCompatButton>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="80dp"
-                android:background="@drawable/bikebuddy_ui_design"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="2dp"
+                android:background="@drawable/bikebuddy_ui_design">
 
             </ImageView>
 
@@ -57,18 +58,19 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-103dp"
-            android:layout_marginLeft="60dp">
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="-103dp">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <TextView
                 android:id="@+id/startinglocation"
                 android:layout_width="300dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/searchviewicon"
+                android:clickable="true"
                 android:elevation="20dp"
                 android:iconifiedByDefault="false"
-                android:queryHint="Your Location"
-                android:layout_marginTop="10dp"/>
+                android:queryHint="Your Location" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -78,7 +80,7 @@
             android:layout_marginLeft="60dp"
             android:layout_marginTop="4dp">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <TextView
                 android:id="@+id/destinedlocation"
                 android:layout_width="300dp"
                 android:layout_height="40dp"
@@ -108,11 +110,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
-
-
-
     <LinearLayout
         android:id="@+id/buttonLayout"
         android:layout_width="0dp"
@@ -127,7 +124,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/splashscreen">
+            android:background="@color/splashscreen"
+            android:clickable="false">
 
             <!-- Layout for Main Screen -->
             <Button
@@ -135,12 +133,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/splashscreen"
-                android:onClick="goToMainScreen"
                 android:text="Explore"
                 android:textColor="@color/white" />
 
         </FrameLayout>
-
 
 
         <FrameLayout
@@ -163,7 +159,6 @@
         </FrameLayout>
 
     </LinearLayout>
-
 
 
     <androidx.appcompat.widget.AppCompatButton

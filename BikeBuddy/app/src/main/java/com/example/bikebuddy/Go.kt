@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.SearchView
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -56,12 +57,12 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
         }
 
 
-        val startinglocation = view.findViewById<Button>(R.id.startinglocation)
+        val startinglocation = view.findViewById<TextView>(R.id.startinglocation)
         startinglocation.setOnClickListener {
             openSearchFragment()
         }
 
-        val destinedlocation = view.findViewById<Button>(R.id.destinedlocation)
+        val destinedlocation = view.findViewById<TextView>(R.id.destinedlocation)
         destinedlocation.setOnClickListener {
             openSearchFragment()
         }

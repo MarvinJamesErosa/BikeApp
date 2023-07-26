@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         val mapFrag = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFrag.getMapAsync(this)
 
+
         binding.BottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.Gonav -> replaceFragment(Go())
