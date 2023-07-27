@@ -17,6 +17,10 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
+
 
 class SearchFragment : Fragment() {
 
@@ -26,6 +30,9 @@ class SearchFragment : Fragment() {
     private lateinit var recentSearchesAdapter: RecentSearchesAdapter
     private val recentSearchesList: MutableList<String> = mutableListOf()
 
+    private val gson: Gson = Gson()
+    private val recentSearchesType: Type = object : TypeToken<List<RecentSearch>>() {}.type
+    private val PREF_RECENT_SEARCHES = "RecentSearches"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,35 +63,6 @@ class SearchFragment : Fragment() {
         recentSearchesRecyclerView = view.findViewById(R.id.recentItemsRecyclerView)
 
         searchView.isFocusableInTouchMode = true
-
-        // Initialize the RecyclerView with an empty list
-        recentSearchesAdapter = RecentSearchesAdapter(recentSearchesList) { suggestion ->
-            searchListener?.onSearch(suggestion)
-            onSearchSubmit(suggestion)
-            requireActivity().supportFragmentManager.popBackStack()
-        }
-
-        recentSearchesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = recentSearchesAdapter
-        }
-
-        // Load recent searches from shared preferences
-        val sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        val recentSearchesSet = sharedPrefs.getStringSet("RecentSearches", mutableSetOf()) ?: mutableSetOf()
-        recentSearchesList.addAll(recentSearchesSet.toMutableList())
-
-        // Initialize the RecyclerView with the loaded recent searches
-        recentSearchesAdapter = RecentSearchesAdapter(recentSearchesList) { suggestion ->
-            searchListener?.onSearch(suggestion)
-            onSearchSubmit(suggestion)
-            requireActivity().supportFragmentManager.popBackStack()
-        }
-
-        recentSearchesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = recentSearchesAdapter
-        }
 
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -125,9 +103,29 @@ class SearchFragment : Fragment() {
     }
 
     private fun onSearchSubmit(query: String) {
-        // Add the search query to recent searches
-        recentSearchesList.add(query)
+        // Check if the query already exists in recent searches
+        val existingIndex = recentSearchesList.indexOf(query)
+
+        // If the query exists, remove it from the current position
+        if (existingIndex != -1) {
+            recentSearchesList.removeAt(existingIndex)
+        }
+
+        // Add the search query to the top of recent searches
+        recentSearchesList.add(0, query)
+
+        // Limit the recent searches list to 5 items
+        if (recentSearchesList.size > 5) {
+            recentSearchesList.removeAt(recentSearchesList.lastIndex)
+        }
+
+        // Update the adapter's data with the new recent searches
         recentSearchesAdapter.notifyDataSetChanged()
+
+        // Serialize recent searches list and save it in SharedPreferences
+        val recentSearchesJson = gson.toJson(recentSearchesList.map { RecentSearch(it) })
+        val sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        sharedPrefs.edit().putString(PREF_RECENT_SEARCHES, recentSearchesJson).apply()
 
         // Call the onSearch method of the parent activity passing the query
         searchListener?.onSearch(query)
@@ -137,13 +135,24 @@ class SearchFragment : Fragment() {
     }
 
     private fun loadRecentSearches() {
-        val sharedPrefs = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val recentSearchesSet = sharedPrefs.getStringSet("RecentSearches", mutableSetOf<String>())
-        recentSearchesList.clear()
-        recentSearchesSet?.let {
-            recentSearchesList.addAll(it)
+        val sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val recentSearchesJson = sharedPrefs.getString(PREF_RECENT_SEARCHES, null)
+        recentSearchesJson?.let {
+            val recentSearches: List<RecentSearch> = gson.fromJson(it, recentSearchesType)
+            recentSearchesList.clear()
+            recentSearchesList.addAll(recentSearches.map { recentSearch -> recentSearch.query })
         }
-        recentSearchesAdapter.notifyDataSetChanged()
+        // Initialize the RecyclerView with the loaded recent searches
+        recentSearchesAdapter = RecentSearchesAdapter(recentSearchesList) { suggestion ->
+            searchListener?.onSearch(suggestion)
+            onSearchSubmit(suggestion)
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        recentSearchesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = recentSearchesAdapter
+        }
     }
 
 

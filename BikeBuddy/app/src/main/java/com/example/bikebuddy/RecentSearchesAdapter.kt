@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+data class RecentSearch(val query: String)
+
 class RecentSearchesAdapter(  private var searches: List<String>,
                               private val clickListener: (String) -> Unit = {} // Click listener for suggestion items
 ) : RecyclerView.Adapter<RecentSearchesAdapter.ViewHolder>() {

@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
     override fun onSearch(query: String) {
         convertLocationToLatLng(query)
-        addToRecentSearches(query)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -253,19 +252,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             }
         }
         return null
-    }
-    private fun addToRecentSearches(query: String) {
-        val sharedPrefs = getSharedPreferences("UserPreferences", MODE_PRIVATE)
-        val recentSearches = sharedPrefs.getStringSet("RecentSearches", mutableSetOf<String>())
-        recentSearches?.let {
-            val newRecentSearches = mutableSetOf<String>()
-            newRecentSearches.add(query)
-            newRecentSearches.addAll(it)
-            if (newRecentSearches.size > 5) {
-                newRecentSearches.remove(newRecentSearches.last())
-            }
-            sharedPrefs.edit().putStringSet("RecentSearches", newRecentSearches).apply()
-        }
     }
 
     private fun showDialog(title: String, message: String) {
