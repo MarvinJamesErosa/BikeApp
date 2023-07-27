@@ -56,8 +56,14 @@ class SearchFragment : Fragment() {
         recentSearchesRecyclerView = view.findViewById(R.id.recentItemsRecyclerView)
 
         searchView.isFocusableInTouchMode = true
+
         // Initialize the RecyclerView with an empty list
-        recentSearchesAdapter = RecentSearchesAdapter(recentSearchesList)
+        recentSearchesAdapter = RecentSearchesAdapter(recentSearchesList) { suggestion ->
+            searchListener?.onSearch(suggestion)
+            onSearchSubmit(suggestion)
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         recentSearchesRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = recentSearchesAdapter
@@ -65,8 +71,8 @@ class SearchFragment : Fragment() {
 
         // Load recent searches from shared preferences
         val sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        val recentSearches = sharedPrefs.getStringSet("RecentSearches", mutableSetOf<String>())
-        recentSearchesList.addAll(recentSearches ?: emptySet())
+        val recentSearchesSet = sharedPrefs.getStringSet("RecentSearches", mutableSetOf()) ?: mutableSetOf()
+        recentSearchesList.addAll(recentSearchesSet.toMutableList())
 
         // Initialize the RecyclerView with the loaded recent searches
         recentSearchesAdapter = RecentSearchesAdapter(recentSearchesList) { suggestion ->
@@ -130,6 +136,17 @@ class SearchFragment : Fragment() {
         requireActivity().supportFragmentManager.popBackStack()
     }
 
+    private fun loadRecentSearches() {
+        val sharedPrefs = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val recentSearchesSet = sharedPrefs.getStringSet("RecentSearches", mutableSetOf<String>())
+        recentSearchesList.clear()
+        recentSearchesSet?.let {
+            recentSearchesList.addAll(it)
+        }
+        recentSearchesAdapter.notifyDataSetChanged()
+    }
+
+
     private fun ifQueryTextChanges(newText: String) {
         if (newText.isNotBlank()) {
             val request = FindAutocompletePredictionsRequest.builder()
@@ -164,6 +181,9 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Load and display recent searches when the fragment is created
+        loadRecentSearches()
 
         val returnButton = view.findViewById<Button>(R.id.returnbutton)
         returnButton.setOnClickListener {
