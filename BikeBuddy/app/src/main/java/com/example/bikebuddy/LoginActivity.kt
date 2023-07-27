@@ -3,6 +3,8 @@ package com.example.bikebuddy
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.TextView
 import android.widget.Toast
 import com.example.bikebuddy.databinding.ActivityLoginBinding
@@ -23,6 +25,19 @@ class LoginActivity : AppCompatActivity() {
 
         navigateToSignUpButton.setOnClickListener {
             navigateToSignup()
+        }
+
+        binding.loginPassRev.setOnClickListener {
+            val currentTransformationMethod = binding.loginPasswordInput.transformationMethod
+
+            if (currentTransformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                binding.loginPasswordInput.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.loginPassRev.setImageResource(R.drawable.pass_hide)
+            } else {
+                binding.loginPasswordInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.loginPassRev.setImageResource(R.drawable.pass_rev)
+            }
+            binding.loginPasswordInput.setSelection(binding.loginPasswordInput.text.length)
         }
 
         binding.loginBtn.setOnClickListener{
@@ -46,8 +61,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-
-
 
     private fun navigateToSignup() {
         val intent = Intent(this, SignUp::class.java)

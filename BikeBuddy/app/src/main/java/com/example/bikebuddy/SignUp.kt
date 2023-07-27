@@ -2,6 +2,9 @@ package com.example.bikebuddy
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +28,32 @@ class SignUp : AppCompatActivity() {
         val navigateToLoginButton: TextView = findViewById(R.id.signup_footer_btn)
         navigateToLoginButton.setOnClickListener {
             navigateToLogin()
+        }
+
+        binding.signupPassRev.setOnClickListener {
+            val currentTransformationMethod = binding.signupPasswordInput.transformationMethod
+
+            if (currentTransformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                binding.signupPasswordInput.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.signupPassRev.setImageResource(R.drawable.pass_hide)
+            } else {
+                binding.signupPasswordInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.signupPassRev.setImageResource(R.drawable.pass_rev)
+            }
+            binding.signupPasswordInput.setSelection(binding.signupPasswordInput.text.length)
+        }
+
+        binding.signupConPassRev.setOnClickListener {
+            val currentTransformationMethod = binding.signupConfirmPassword.transformationMethod
+
+            if (currentTransformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                binding.signupConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.signupConPassRev.setImageResource(R.drawable.pass_hide)
+            } else {
+                binding.signupConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.signupConPassRev.setImageResource(R.drawable.pass_rev)
+            }
+            binding.signupConfirmPassword.setSelection(binding.signupConfirmPassword.text.length)
         }
 
         binding.signupCreateBtn.setOnClickListener {
@@ -67,6 +96,8 @@ class SignUp : AppCompatActivity() {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
         }
+
+
     }
 
     private fun navigateToLogin() {
@@ -79,4 +110,6 @@ class SignUp : AppCompatActivity() {
         val pattern = PatternsCompat.EMAIL_ADDRESS
         return pattern.matcher(email).matches()
     }
+
+
 }
