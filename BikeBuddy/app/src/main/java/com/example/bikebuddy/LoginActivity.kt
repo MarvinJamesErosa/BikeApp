@@ -9,7 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.bikebuddy.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
-
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.example.bikebuddy.Account
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
@@ -32,10 +34,10 @@ class LoginActivity : AppCompatActivity() {
 
             if (currentTransformationMethod == HideReturnsTransformationMethod.getInstance()) {
                 binding.loginPasswordInput.transformationMethod = PasswordTransformationMethod.getInstance()
-                binding.loginPassRev.setImageResource(R.drawable.pass_hide)
+                binding.loginPassRev.setImageResource(R.drawable.pass_rev)
             } else {
                 binding.loginPasswordInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                binding.loginPassRev.setImageResource(R.drawable.pass_rev)
+                binding.loginPassRev.setImageResource(R.drawable.pass_hide)
             }
             binding.loginPasswordInput.setSelection(binding.loginPasswordInput.text.length)
         }
@@ -49,8 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(this, "Successfully Log In", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
+                        loginFunc()
                     } else {
                         Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
                     }
@@ -67,4 +68,11 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    private fun loginFunc() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+
 }

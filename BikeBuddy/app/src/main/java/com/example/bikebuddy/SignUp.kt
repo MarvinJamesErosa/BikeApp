@@ -35,10 +35,10 @@ class SignUp : AppCompatActivity() {
 
             if (currentTransformationMethod == HideReturnsTransformationMethod.getInstance()) {
                 binding.signupPasswordInput.transformationMethod = PasswordTransformationMethod.getInstance()
-                binding.signupPassRev.setImageResource(R.drawable.pass_hide)
+                binding.signupPassRev.setImageResource(R.drawable.pass_rev)
             } else {
                 binding.signupPasswordInput.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                binding.signupPassRev.setImageResource(R.drawable.pass_rev)
+                binding.signupPassRev.setImageResource(R.drawable.pass_hide)
             }
             binding.signupPasswordInput.setSelection(binding.signupPasswordInput.text.length)
         }
@@ -48,10 +48,10 @@ class SignUp : AppCompatActivity() {
 
             if (currentTransformationMethod == HideReturnsTransformationMethod.getInstance()) {
                 binding.signupConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-                binding.signupConPassRev.setImageResource(R.drawable.pass_hide)
+                binding.signupConPassRev.setImageResource(R.drawable.pass_rev)
             } else {
                 binding.signupConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                binding.signupConPassRev.setImageResource(R.drawable.pass_rev)
+                binding.signupConPassRev.setImageResource(R.drawable.pass_hide)
             }
             binding.signupConfirmPassword.setSelection(binding.signupConfirmPassword.text.length)
         }

@@ -7,8 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.firebase.auth.FirebaseAuth
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 
 class Account : Fragment() {
+
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,15 +29,37 @@ class Account : Fragment() {
             navigateToLogin()
         }
 
-        navigateToAboutButton.setOnClickListener{
+        navigateToAboutButton.setOnClickListener {
             navigateToAbout()
+        }
+
+        firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser = firebaseAuth.currentUser
+        val usernameText: TextView = view.findViewById(R.id.username)
+        val genSetting: TextView = view.findViewById(R.id.account_setting_text)
+        val profilePic: ImageView = view.findViewById(R.id.profile_Pic)
+        val layoutParams = genSetting.layoutParams as ConstraintLayout.LayoutParams
+
+        if (currentUser != null) {
+            navigateToLoginButton.visibility = View.GONE
+            usernameText.visibility = View.VISIBLE
+            profilePic.visibility = View.VISIBLE
+
+            val username = "Welcome, ${currentUser.displayName}!"
+            usernameText.text = username
+            layoutParams.topToBottom = R.id.username
+            genSetting.layoutParams = layoutParams
+        } else {
+            navigateToLoginButton.visibility = View.VISIBLE
+            usernameText.visibility = View.GONE
+
         }
 
         return view
     }
 
     private fun navigateToLogin() {
-        val intent = Intent(requireContext(), LoginActivity::class.java)
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
         startActivity(intent)
     }
 
