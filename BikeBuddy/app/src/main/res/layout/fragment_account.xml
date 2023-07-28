@@ -145,7 +145,7 @@
         app:layout_constraintTop_toBottomOf="@+id/account_terms_btn" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/account_rate_btn"
+        android:id="@+id/account_logout_btn"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:background="@color/white"
@@ -154,7 +154,7 @@
         android:drawablePadding="20dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:text="Rate This App"
+        android:text="Log Out"
         android:textAlignment="viewStart"
         android:textAllCaps="false"
         android:textColor="#222222"
@@ -163,25 +163,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/account_privacy_btn" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/account_share_btn"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@color/white"
-        android:drawableLeft="@drawable/account_share"
-        android:drawableRight="@drawable/account_arrow"
-        android:drawablePadding="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:text="Share This App"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textColor="#222222"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_rate_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

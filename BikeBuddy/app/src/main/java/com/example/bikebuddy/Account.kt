@@ -55,6 +55,12 @@ class Account : Fragment() {
 
         }
 
+        val logoutButton: Button = view.findViewById(R.id.account_logout_btn)
+
+        logoutButton.setOnClickListener {
+            logout()
+        }
+
         return view
     }
 
@@ -66,5 +72,15 @@ class Account : Fragment() {
     private fun navigateToAbout() {
         val intent = Intent(requireContext(), About::class.java)
         startActivity(intent)
+    }
+
+    private fun navigateToMain() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        navigateToMain()
     }
 }
