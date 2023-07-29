@@ -15,12 +15,11 @@
 
     <ImageButton
         android:id="@+id/removeRecentSearchButton"
-        android:layout_marginTop="5dp"
-        android:layout_width="24sp"
-        android:layout_height="18sp"
-        android:background="@color/white"
+        android:layout_width="16sp"
+        android:layout_height="16sp"
+        android:layout_gravity="center"
+        android:background="@drawable/remove_icon_1"
         android:contentDescription="@string/remove_recent_search"
-        android:padding="1sp"
-        android:src="@drawable/remove_icon_1" />
+        android:padding="1sp" />
 
 </LinearLayout>

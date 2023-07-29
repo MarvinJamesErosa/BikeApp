@@ -22,6 +22,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
     private lateinit var binding: ActivityMainBinding
     private var sharedRoutesPopup: PopupWindow? = null
-
+    private var stringQuery: String? = null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
@@ -77,6 +78,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
     override fun onSearch(query: String) {
         convertLocationToLatLng(query)
+        stringQuery = query
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,6 +135,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setInfoWindowAdapter(null)
         checkForLocationPermission()
         mMap.isMyLocationEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = false
@@ -206,7 +209,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                         .title(title)
                                 )
                                 previousMarker = newMarker
-
+                                setDestinedLocationText()
                                 // Hide or remove the views you want to remove
                                 findViewById<Button>(R.id.searchButton).visibility = View.GONE
                                 // Hide or remove other views as needed
@@ -232,6 +235,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             }
     }
 
+    private fun setDestinedLocationText(){
+        val destinedLocation = findViewById<TextView>(R.id.destinedlocation)
+        destinedLocation.text = stringQuery
+    }
 
     private fun getAddressComponent(components: List<AddressComponent>?, type: String): String? {
         components?.forEach { component ->
