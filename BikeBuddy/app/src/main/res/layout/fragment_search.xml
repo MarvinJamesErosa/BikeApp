@@ -52,6 +52,17 @@
             android:background="@color/white"
             android:padding="16dp" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/suggestionsRecyclerView"
+            android:layout_width="361dp"
+            android:layout_height="547dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="55dp"
+            android:background="@color/white"
+            android:layout_below="@id/searchViewLocation"
+            android:padding="16dp"
+            android:visibility="gone" />
+
     </FrameLayout>
 
 

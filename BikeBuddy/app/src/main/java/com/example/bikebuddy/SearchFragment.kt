@@ -28,6 +28,8 @@ class SearchFragment : Fragment() {
     private lateinit var placesClient: PlacesClient
     private lateinit var recentSearchesRecyclerView: RecyclerView
     private lateinit var recentSearchesAdapter: RecentSearchesAdapter
+    private lateinit var suggestionsRecyclerView: RecyclerView
+    private lateinit var suggestionsAdapter: RecentSearchesAdapter
     private val recentSearchesList: MutableList<String> = mutableListOf()
 
     private val gson: Gson = Gson()
@@ -60,7 +62,21 @@ class SearchFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
         val searchView = view.findViewById<SearchView>(R.id.searchViewLocation)
+        suggestionsRecyclerView = view.findViewById<RecyclerView>(R.id.suggestionsRecyclerView)
         recentSearchesRecyclerView = view.findViewById(R.id.recentItemsRecyclerView)
+
+        // Set up RecyclerView for autocomplete suggestions
+        suggestionsAdapter = RecentSearchesAdapter(emptyList(),
+            { suggestion ->
+                searchListener?.onSearch(suggestion)
+                onSearchSubmit(suggestion)
+                requireActivity().supportFragmentManager.popBackStack()
+            },
+            { query -> removeRecentSearch(query) },
+            showRemoveButton = false
+        )
+        suggestionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        suggestionsRecyclerView.adapter = suggestionsAdapter
 
         searchView.isFocusableInTouchMode = true
 
@@ -83,7 +99,21 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                ifQueryTextChanges(newText)
+                if (newText.isNotBlank()) {
+                    // Hide the RecyclerView for recent searches when the user types something
+                    recentSearchesRecyclerView.visibility = View.GONE
+                    // Process the search query and show the autocomplete suggestions
+                    ifQueryTextChanges(newText)
+                } else {
+                    // Show the RecyclerView for recent searches when the search query is empty
+                    recentSearchesRecyclerView.visibility = View.VISIBLE
+                    // Show the recent searches list again
+                    loadRecentSearches()
+                    // Clear the autocomplete suggestions UI when search bar text is cleared
+                    suggestionsAdapter.setSearches(emptyList())
+                    // Hide the RecyclerView for autocomplete suggestions
+                    suggestionsRecyclerView.visibility = View.GONE
+                }
                 return true
             }
         })
@@ -119,7 +149,8 @@ class SearchFragment : Fragment() {
             recentSearchesList.removeAt(recentSearchesList.lastIndex)
         }
 
-        // Update the adapter's data with the new recent searches
+        // Update the adapter's data with the new recent searches and show the most recent on top
+        recentSearchesAdapter.setSearches(recentSearchesList)
         recentSearchesAdapter.notifyDataSetChanged()
 
         // Serialize recent searches list and save it in SharedPreferences
@@ -134,6 +165,20 @@ class SearchFragment : Fragment() {
         requireActivity().supportFragmentManager.popBackStack()
     }
 
+    private fun removeRecentSearch(query: String) {
+        val existingIndex = recentSearchesList.indexOf(query)
+        if (existingIndex != -1) {
+            recentSearchesList.removeAt(existingIndex)
+            recentSearchesAdapter.setSearches(recentSearchesList)
+            recentSearchesAdapter.notifyDataSetChanged()
+
+            // Serialize recent searches list and save it in SharedPreferences
+            val recentSearchesJson = gson.toJson(recentSearchesList.map { RecentSearch(it) })
+            val sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+            sharedPrefs.edit().putString(PREF_RECENT_SEARCHES, recentSearchesJson).apply()
+        }
+    }
+
     private fun loadRecentSearches() {
         val sharedPrefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         val recentSearchesJson = sharedPrefs.getString(PREF_RECENT_SEARCHES, null)
@@ -142,17 +187,23 @@ class SearchFragment : Fragment() {
             recentSearchesList.clear()
             recentSearchesList.addAll(recentSearches.map { recentSearch -> recentSearch.query })
         }
-        // Initialize the RecyclerView with the loaded recent searches
-        recentSearchesAdapter = RecentSearchesAdapter(recentSearchesList) { suggestion ->
-            searchListener?.onSearch(suggestion)
-            onSearchSubmit(suggestion)
-            requireActivity().supportFragmentManager.popBackStack()
-        }
+        // Initialize the RecyclerView with the loaded recent searches and set the remove click listener
+        recentSearchesAdapter = RecentSearchesAdapter(recentSearchesList,
+            { suggestion ->
+                searchListener?.onSearch(suggestion)
+                onSearchSubmit(suggestion)
+                requireActivity().supportFragmentManager.popBackStack()
+            },
+            { query -> removeRecentSearch(query) }, // Pass the removeRecentSearch method to the adapter
+            showRemoveButton = true // Set showRemoveButton to false for the suggestionsAdapter
+        )
 
         recentSearchesRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = recentSearchesAdapter
         }
+        recentSearchesAdapter.setSearches(recentSearchesList)
+        recentSearchesAdapter.notifyDataSetChanged()
     }
 
 
@@ -168,14 +219,20 @@ class SearchFragment : Fragment() {
                     // Extract the place names from the predictions
                     val placeNames = predictions.map { it.getPrimaryText(null).toString() }
                     // Update the adapter's data with the new place names
-                    recentSearchesAdapter.setSearches(placeNames)
+                    suggestionsAdapter.setSearches(placeNames.sorted())
+                    // Show the RecyclerView for autocomplete suggestions
+                    suggestionsRecyclerView.visibility = View.VISIBLE
                 }
                 .addOnFailureListener { exception: Exception ->
                     // Handle autocomplete failure
+                    // Hide the RecyclerView for autocomplete suggestions
+                    suggestionsRecyclerView.visibility = View.GONE
                 }
         } else {
             // Clear the autocomplete suggestions UI
-            recentSearchesAdapter.setSearches(emptyList())
+            suggestionsAdapter.setSearches(emptyList())
+            // Hide the RecyclerView for autocomplete suggestions
+            suggestionsRecyclerView.visibility = View.GONE
         }
     }
 
