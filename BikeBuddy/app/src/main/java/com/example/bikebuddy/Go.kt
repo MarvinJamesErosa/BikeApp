@@ -22,6 +22,7 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -87,6 +88,7 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
 
     }
 
+
     override fun onResume() {
         super.onResume()
 
@@ -111,6 +113,7 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
         // Show the Go fragment with the map
         parentFragmentManager.popBackStack()
     }
+
 
 
     private fun openSearchFragment() {
@@ -143,6 +146,8 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
         // Show the bottom sheet dialog
         bottomSheetDialog.show()
     }
+
+
 
 
 

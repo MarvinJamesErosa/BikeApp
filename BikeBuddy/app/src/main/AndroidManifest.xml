@@ -20,6 +20,15 @@
             android:exported="false"
             android:theme="@style/Theme.BikeBuddy"/>
         <activity
+            android:name=".TermsConditions"
+            android:exported="false"
+            android:theme="@style/Theme.BikeBuddy" />
+        <activity
+            android:name=".PrivacyPolicy"
+            android:exported="false"
+            android:theme="@style/Theme.BikeBuddy" />
+
+        <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -45,6 +54,8 @@
             android:name=".LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.BikeBuddy" />
+
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

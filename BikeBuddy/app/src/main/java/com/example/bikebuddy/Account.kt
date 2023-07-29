@@ -26,6 +26,8 @@ class Account : Fragment() {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
         val topButton: Button = view.findViewById(R.id.account_login_btn)
         val navigateToAboutButton: Button = view.findViewById(R.id.account_about_btn)
+        val navigateToTermsConditions: Button = view.findViewById(R.id.account_terms_btn)
+        val navigateToPrivacyPolicy: Button = view.findViewById(R.id.account_privacy_btn)
         val verifyBtn: TextView = view.findViewById(R.id.verify_now_btn)
         firebaseAuth = FirebaseAuth.getInstance()
         val currentUser = firebaseAuth.currentUser
@@ -39,6 +41,16 @@ class Account : Fragment() {
         navigateToAboutButton.setOnClickListener {
             navigateToAbout()
         }
+
+        navigateToTermsConditions.setOnClickListener {
+            navigateToTermsConditions()
+        }
+
+
+        navigateToPrivacyPolicy.setOnClickListener {
+            navigateToPrivacyPolicy()
+        }
+
 
         verifyBtn.setOnClickListener{
             currentUser?.sendEmailVerification()?.addOnSuccessListener {
@@ -119,10 +131,21 @@ class Account : Fragment() {
         startActivity(intent)
     }
 
+    private fun navigateToTermsConditions() {
+        val intent = Intent(requireActivity(), TermsConditions::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToPrivacyPolicy() {
+        val intent = Intent(requireContext(), PrivacyPolicy::class.java)
+        startActivity(intent)
+    }
+
     private fun navigateToAbout() {
         val intent = Intent(requireContext(), About::class.java)
         startActivity(intent)
     }
+
 
     private fun navigateToMain() {
         val intent = Intent(requireContext(), MainActivity::class.java)

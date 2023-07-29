@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".PrivacyPolicy">
+
+        <!-- Your existing views go here -->
+
+        <LinearLayout
+            android:id="@+id/textlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/splashscreen"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/backPrivacy"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="-2dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/baseline_arrow_back_24"
+                android:backgroundTint="@color/white">
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <TextView
+                android:id="@+id/terms_topbar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="-50dp"
+                android:background="@color/ic_launcher_background"
+                android:text="Privacy Policy"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="-10dp"
+            android:text="At BikeBuddy, we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and disclose your information when you use our mobile application (the App). By using BikeBuddy, you consent to the practices described in this policy."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textlayout" />
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="1.	Information We Collect:"
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView2"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView3.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="a.	Personal Information: When you create an account, we may collect personal information such as your name, email address, and profile picture."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView3"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView3.2"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="b.	Location Information: To provide you with accurate navigation and map features, we collect and process your device's location data while using the App."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView3.1"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView3.3"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="c.	Usage Information: We may collect information about how you use the App, including your interactions, preferences, and settings."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView3.2"
+            tools:layout_editor_absoluteX="20dp"/>
+
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="2.	Use of Information:"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView3.3"
+            tools:layout_editor_absoluteX="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textView4.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="a.	Provide Services: We use the information we collect to provide and personalize the App's features, such as navigation, route recommendations, and community-based information."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView4"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView4.2"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="b.	Improve User Experience: We analyze usage data to understand and enhance the performance, usability, and content of the App."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView4.1"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView4.3"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="c.	Communication: We may use your contact information to send you updates, notifications, and promotional messages related to BikeBuddy. You can opt-out of promotional communications at any time."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView4.2"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView4.4"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="d.	Legal Compliance: We may access, preserve, or disclose your information if required by law or in good faith belief that such action is necessary to comply with legal obligations, protect our rights, or investigate potential violations."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView4.3"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="3.	Information Sharing:"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView4.4"
+            tools:layout_editor_absoluteX="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textView5.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="a.	Third-Party Service Providers: We may share your information with trusted third-party service providers to assist us in providing and improving the App. These providers are obligated to protect your information in accordance with this Privacy Policy."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView5"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView5.2"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="b.	Aggregate or Anonymized Data: We may share aggregated or anonymized information that does not personally identify you for analytical or marketing purposes."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView5.1"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="4.	Data Retention:"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView5.2"
+            tools:layout_editor_absoluteX="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textView6.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView6"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="5.	Security:"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView6.1"
+            tools:layout_editor_absoluteX="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textView7.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="We employ industry-standard security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction. However, please note that no method of transmission over the internet or electronic storage is 100% secure."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView7"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="6.	Children's Privacy:"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView7.1"
+            tools:layout_editor_absoluteX="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textView8.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="BikeBuddy is not intended for use by individuals under the age of 13. We do not knowingly collect personal information from children. If we become aware that we have inadvertently collected personal information from a child, we will take steps to delete it."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView8"
+            tools:layout_editor_absoluteX="20dp"/>
+
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="7.	Third-Party Links:"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView8.1"
+            tools:layout_editor_absoluteX="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textView9.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="The App may contain links to third-party websites or services. We are not responsible for the privacy practices or content of those websites. We encourage you to review the privacy policies of any third-party sites or services you visit."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView9"
+            tools:layout_editor_absoluteX="20dp"/>
+
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="8.	Changes to this Privacy Policy:"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView9.1"
+            tools:layout_editor_absoluteX="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textView10.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="We may update this Privacy Policy from time to time. Any changes will be posted within the App, and the revised policy will be effective immediately upon posting."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView10"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="9.	Contact Us:"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView10.1"
+            tools:layout_editor_absoluteX="20dp"
+            />
+
+        <TextView
+            android:id="@+id/textView11.1"
+            android:layout_width="300dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:text="If you have any questions, concerns, or requests regarding this Privacy Policy or the privacy practices of BikeBuddy, please contact us at [contact information]."
+            android:background="@color/white"
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView11"
+            tools:layout_editor_absoluteX="20dp"/>
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="By using BikeBuddy, you acknowledge that you have read, understood, and agreed to this Privacy Policy."
+            android:justificationMode="inter_word"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView11.1"
+            tools:layout_editor_absoluteX="20dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -2,16 +2,14 @@ package com.example.bikebuddy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import androidx.appcompat.widget.AppCompatButton
 
-class About : AppCompatActivity() {
+class PrivacyPolicy : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about)
+        setContentView(R.layout.activity_privacypolicy)
 
-        val backButton: AppCompatButton = findViewById(R.id.backAbout)
+        val backButton: AppCompatButton = findViewById(R.id.backPrivacy)
         backButton.setOnClickListener {
             onBackPressed() // Handle the back button click to go back to the previous screen (fragment)
         }
