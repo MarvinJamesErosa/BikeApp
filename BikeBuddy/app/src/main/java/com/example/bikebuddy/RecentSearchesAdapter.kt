@@ -50,7 +50,7 @@ class RecentSearchesAdapter(  private var searches: List<String>,
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(search: String) {
-            itemView.findViewById<TextView>(R.id.recentSearchesViewSearch).text = search
+            itemView.findViewById<TextView>(R.id.recentSearchesTextView).text = search
         }
     }
 }

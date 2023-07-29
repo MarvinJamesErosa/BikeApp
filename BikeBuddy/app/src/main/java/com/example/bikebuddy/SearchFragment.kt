@@ -29,7 +29,7 @@ class SearchFragment : Fragment() {
     private lateinit var recentSearchesRecyclerView: RecyclerView
     private lateinit var recentSearchesAdapter: RecentSearchesAdapter
     private lateinit var suggestionsRecyclerView: RecyclerView
-    private lateinit var suggestionsAdapter: RecentSearchesAdapter
+    private lateinit var autocompleteSuggestionsAdapter: AutocompleteSuggestionsAdapter
     private val recentSearchesList: MutableList<String> = mutableListOf()
 
     private val gson: Gson = Gson()
@@ -66,17 +66,14 @@ class SearchFragment : Fragment() {
         recentSearchesRecyclerView = view.findViewById(R.id.recentItemsRecyclerView)
 
         // Set up RecyclerView for autocomplete suggestions
-        suggestionsAdapter = RecentSearchesAdapter(emptyList(),
-            { suggestion ->
-                searchListener?.onSearch(suggestion)
-                onSearchSubmit(suggestion)
-                requireActivity().supportFragmentManager.popBackStack()
-            },
-            { query -> removeRecentSearch(query) },
-            showRemoveButton = false
-        )
+        autocompleteSuggestionsAdapter = AutocompleteSuggestionsAdapter(emptyList()) { suggestion ->
+            // Handle suggestion item click here
+            searchListener?.onSearch(suggestion)
+            onSearchSubmit(suggestion)
+            requireActivity().supportFragmentManager.popBackStack()
+        }
         suggestionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        suggestionsRecyclerView.adapter = suggestionsAdapter
+        suggestionsRecyclerView.adapter = autocompleteSuggestionsAdapter
 
         searchView.isFocusableInTouchMode = true
 
@@ -110,7 +107,7 @@ class SearchFragment : Fragment() {
                     // Show the recent searches list again
                     loadRecentSearches()
                     // Clear the autocomplete suggestions UI when search bar text is cleared
-                    suggestionsAdapter.setSearches(emptyList())
+                    autocompleteSuggestionsAdapter.setSearches(emptyList())
                     // Hide the RecyclerView for autocomplete suggestions
                     suggestionsRecyclerView.visibility = View.GONE
                 }
@@ -207,19 +204,32 @@ class SearchFragment : Fragment() {
     }
 
 
+
     private fun ifQueryTextChanges(newText: String) {
         if (newText.isNotBlank()) {
             val request = FindAutocompletePredictionsRequest.builder()
                 .setQuery(newText)
+                .setCountry("PH") // Use "PH" for the Philippines
                 .build()
 
             placesClient.findAutocompletePredictions(request)
                 .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                     val predictions = response.autocompletePredictions
-                    // Extract the place names from the predictions
-                    val placeNames = predictions.map { it.getPrimaryText(null).toString() }
-                    // Update the adapter's data with the new place names
-                    suggestionsAdapter.setSearches(placeNames.sorted())
+                    val filteredPredictions = mutableListOf<String>()
+
+                    for (prediction in predictions) {
+                        val primaryText = prediction.getPrimaryText(null).toString()
+                        val secondaryText = prediction.getSecondaryText(null).toString()
+
+                        // Include the autocomplete suggestion only if the primary text and
+                        // secondary text are different from the query
+                        if (!primaryText.equals(newText, ignoreCase = true) && !secondaryText.equals(newText, ignoreCase = true)) {
+                            filteredPredictions.add("${prediction.getPrimaryText(null)}, ${prediction.getSecondaryText(null)}")
+                        }
+                    }
+
+                    // Update the adapter's data with the new places (excluding the city itself)
+                    autocompleteSuggestionsAdapter.setSearches(filteredPredictions.sorted())
                     // Show the RecyclerView for autocomplete suggestions
                     suggestionsRecyclerView.visibility = View.VISIBLE
                 }
@@ -230,11 +240,12 @@ class SearchFragment : Fragment() {
                 }
         } else {
             // Clear the autocomplete suggestions UI
-            suggestionsAdapter.setSearches(emptyList())
+            autocompleteSuggestionsAdapter.setSearches(emptyList())
             // Hide the RecyclerView for autocomplete suggestions
             suggestionsRecyclerView.visibility = View.GONE
         }
     }
+
 
     interface SearchListener {
         fun onSearch(query: String)

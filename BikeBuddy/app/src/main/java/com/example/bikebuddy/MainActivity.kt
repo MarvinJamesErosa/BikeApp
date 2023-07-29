@@ -1,7 +1,6 @@
 package com.example.bikebuddy
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.ActivityInfo
@@ -24,7 +23,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.ButtonBarLayout
 import com.example.bikebuddy.Account
 import com.example.bikebuddy.Community
 import com.example.bikebuddy.Go
@@ -41,9 +39,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AddressComponent

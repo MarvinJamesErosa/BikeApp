@@ -5,20 +5,11 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/recentSearchesTextView"
+        android:id="@+id/autocompleteSuggestionsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textColor="@color/black"
         />
-
-    <ImageButton
-        android:id="@+id/removeRecentSearchButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_remove_recent_search"
-        android:background="?attr/selectableItemBackground"
-        android:padding="8dp"
-        android:contentDescription="@string/remove_recent_search" />
 
 </LinearLayout>
