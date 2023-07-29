@@ -393,12 +393,12 @@
             android:layout_width="310dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="By using BikeBuddy, you acknowledge that you have read, understood, and agreed to this Privacy Policy."
+            android:layout_marginBottom="30dp"
             android:justificationMode="inter_word"
+            android:text="By using BikeBuddy, you acknowledge that you have read, understood, and agreed to this Privacy Policy."
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView11.1"
-            tools:layout_editor_absoluteX="20dp"
-            />
+            app:layout_constraintTop_toBottomOf="@id/textView11.1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
