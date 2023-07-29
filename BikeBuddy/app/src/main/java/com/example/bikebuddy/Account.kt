@@ -27,6 +27,7 @@ class Account : Fragment() {
         val topButton: Button = view.findViewById(R.id.account_login_btn)
         val navigateToAboutButton: Button = view.findViewById(R.id.account_about_btn)
         val navigateToTermsConditions: Button = view.findViewById(R.id.account_terms_btn)
+        val navigateToEditProfile: Button = view.findViewById(R.id.account_login_btn)
         val navigateToPrivacyPolicy: Button = view.findViewById(R.id.account_privacy_btn)
         val verifyBtn: TextView = view.findViewById(R.id.verify_now_btn)
         firebaseAuth = FirebaseAuth.getInstance()
@@ -37,6 +38,10 @@ class Account : Fragment() {
         val logoutBtn: Button = view.findViewById(R.id.account_logout_btn)
         val topButtonParams = topButton.layoutParams as LayoutParams
 
+
+        navigateToEditProfile.setOnClickListener{
+            navigateToEditProfile()
+        }
 
         navigateToAboutButton.setOnClickListener {
             navigateToAbout()
@@ -151,6 +156,12 @@ class Account : Fragment() {
         val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
     }
+
+    private fun navigateToEditProfile() {
+        val intent = Intent(requireContext(), EditProfile::class.java)
+        startActivity(intent)
+    }
+
 
     private fun logout() {
         FirebaseAuth.getInstance().signOut()

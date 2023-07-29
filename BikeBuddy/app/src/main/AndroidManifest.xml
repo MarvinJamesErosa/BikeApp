@@ -31,6 +31,10 @@
             android:name=".ForgotPassword"
             android:exported="false"
             android:theme="@style/Theme.BikeBuddy" />
+        <activity
+            android:name=".EditProfile"
+            android:exported="false"
+            android:theme="@style/Theme.BikeBuddy" />
 
         <activity
             android:name=".SplashActivity"
