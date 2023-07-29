@@ -49,10 +49,8 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
 
         val gobackButton = view.findViewById<Button>(R.id.gobackbutton)
         gobackButton.setOnClickListener {
-            val mainActivityIntent = Intent(requireContext(), MainActivity::class.java)
-            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(mainActivityIntent)
-            requireActivity().finish()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
         }
 
 
