@@ -34,19 +34,19 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/gobackbutton"
-                android:layout_width="27dp"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:text="X"
-                android:textColor="@color/black"
-                android:textSize="10dp">
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/remove_icon_1"
+                android:backgroundTint="@color/white">
 
             </androidx.appcompat.widget.AppCompatButton>
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="80dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="35dp"
                 android:layout_marginTop="2dp"
                 android:background="@drawable/bikebuddy_ui_design">
 

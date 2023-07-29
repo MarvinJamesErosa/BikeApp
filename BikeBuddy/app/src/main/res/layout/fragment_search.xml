@@ -44,7 +44,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recentItemsRecyclerView"
-            android:layout_width="361dp"
+            android:layout_width="348dp"
             android:layout_height="547dp"
             android:layout_below="@id/searchViewLocation"
             android:layout_marginLeft="50dp"
