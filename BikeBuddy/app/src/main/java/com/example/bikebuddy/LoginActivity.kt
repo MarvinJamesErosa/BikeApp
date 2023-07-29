@@ -21,6 +21,12 @@ class LoginActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        val navigateToForgotPassword: TextView = findViewById(R.id.login_forgot_password_btn)
+
+        navigateToForgotPassword.setOnClickListener {
+            navigateToForgotPassword()
+        }
+
         val navigateToSignUpButton: TextView = findViewById(R.id.login_footer_btn)
 
         navigateToSignUpButton.setOnClickListener {
@@ -65,6 +71,11 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, SignUp::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun navigateToForgotPassword() {
+        val intent = Intent(this, ForgotPassword::class.java)
+        startActivity(intent)
     }
 
     private fun loginFunc() {

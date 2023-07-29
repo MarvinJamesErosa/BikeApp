@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/historyrecent"
+        android:layout_width="32sp"
+        android:layout_height="32sp"
+        android:src="@drawable/history"
+        android:layout_gravity="center"
+        android:layout_weight="0"/> <!-- Set layout_weight to 0 to allow ImageView to take minimum space -->
 
     <TextView
         android:id="@+id/recentSearchesTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="20dp"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -20,6 +32,7 @@
         android:layout_gravity="center"
         android:background="@drawable/remove_icon_1"
         android:contentDescription="@string/remove_recent_search"
-        android:padding="1sp" />
+        android:padding="1sp"
+        android:layout_weight="0" /><!-- Set layout_weight to 0 to allow ImageButton to take minimum space -->
 
 </LinearLayout>
