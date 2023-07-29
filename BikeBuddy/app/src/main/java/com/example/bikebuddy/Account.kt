@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+import kotlin.math.roundToInt
+import androidx.core.content.ContextCompat
 
 class Account : Fragment() {
 
@@ -22,36 +24,84 @@ class Account : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
-        val navigateToLoginButton: Button = view.findViewById(R.id.account_login_btn)
+        val topButton: Button = view.findViewById(R.id.account_login_btn)
         val navigateToAboutButton: Button = view.findViewById(R.id.account_about_btn)
+        val verifyBtn: TextView = view.findViewById(R.id.verify_now_btn)
+        firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser = firebaseAuth.currentUser
+        val usernameText: TextView = view.findViewById(R.id.username)
+        val profilePic: ImageView = view.findViewById(R.id.profile_Pic)
+        val emailText: TextView = view.findViewById(R.id.email_text)
+        val logoutBtn: Button = view.findViewById(R.id.account_logout_btn)
+        val topButtonParams = topButton.layoutParams as LayoutParams
 
-        navigateToLoginButton.setOnClickListener {
-            navigateToLogin()
-        }
 
         navigateToAboutButton.setOnClickListener {
             navigateToAbout()
         }
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        val currentUser = firebaseAuth.currentUser
-        val usernameText: TextView = view.findViewById(R.id.username)
-        val genSetting: TextView = view.findViewById(R.id.account_setting_text)
-        val profilePic: ImageView = view.findViewById(R.id.profile_Pic)
-        val layoutParams = genSetting.layoutParams as ConstraintLayout.LayoutParams
+        verifyBtn.setOnClickListener{
+            currentUser?.sendEmailVerification()?.addOnSuccessListener {
+                Toast.makeText(requireContext(), "Sent Verification Email!", Toast.LENGTH_SHORT).show()
+                FirebaseAuth.getInstance().signOut()
+                navigateToLogin()
+                Toast.makeText(requireContext(), "Please Log In Again", Toast.LENGTH_SHORT).show()
+            }?.addOnFailureListener {exception ->
+                Toast.makeText(requireContext(), exception.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
 
         if (currentUser != null) {
-            navigateToLoginButton.visibility = View.GONE
+
             usernameText.visibility = View.VISIBLE
             profilePic.visibility = View.VISIBLE
+            logoutBtn.visibility = View.VISIBLE
+            emailText.visibility = View.VISIBLE
 
-            val username = "Welcome, ${currentUser.displayName}!"
+            val username = currentUser.displayName
+            val email = currentUser.email
+
             usernameText.text = username
-            layoutParams.topToBottom = R.id.username
-            genSetting.layoutParams = layoutParams
+            emailText.text = email
+
+            val marginInDp = 15f
+            val scale = resources.displayMetrics.density
+            val marginInPixels = (marginInDp * scale).roundToInt()
+
+            topButtonParams.topToBottom = R.id.verify_now_btn
+            topButtonParams.topMargin = marginInPixels
+            topButton.text = "Edit Profile"
+            topButton.layoutParams = topButtonParams
+
+            val editIcon = ContextCompat.getDrawable(requireContext(), R.drawable.edit_icon)
+
+            topButton.setCompoundDrawablesWithIntrinsicBounds(editIcon, null,null, null)
+
+
+            val isEmailVerified = currentUser.isEmailVerified
+            if (isEmailVerified) {
+
+                verifyBtn.visibility = View.GONE
+                val marginInDp = 15f
+                val scale = resources.displayMetrics.density
+                val marginInPixels = (marginInDp * scale).roundToInt()
+
+                topButtonParams.topToBottom = R.id.email_text
+                topButtonParams.topMargin = marginInPixels
+                topButton.layoutParams = topButtonParams
+
+
+            } else {
+                verifyBtn.visibility = View.VISIBLE
+            }
+
         } else {
-            navigateToLoginButton.visibility = View.VISIBLE
-            usernameText.visibility = View.GONE
+            topButton.text = "Login"
+            topButton.setOnClickListener {
+                navigateToLogin()
+            }
 
         }
 
@@ -83,4 +133,6 @@ class Account : Fragment() {
         FirebaseAuth.getInstance().signOut()
         navigateToMain()
     }
+
+
 }

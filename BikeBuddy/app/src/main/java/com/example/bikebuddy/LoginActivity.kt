@@ -9,9 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.bikebuddy.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.example.bikebuddy.Account
+
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth

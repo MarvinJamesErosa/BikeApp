@@ -23,12 +23,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
-import com.example.bikebuddy.Account
-import com.example.bikebuddy.Community
-import com.example.bikebuddy.Go
-import com.example.bikebuddy.LoginActivity
-import com.example.bikebuddy.SearchFragment
-import com.example.bikebuddy.SearchListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory

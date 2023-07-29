@@ -69,6 +69,13 @@ class SignUp : AppCompatActivity() {
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     val user: FirebaseUser? = firebaseAuth.currentUser
+
+                                    user?.sendEmailVerification()?.addOnSuccessListener {
+                                        Toast.makeText(this, "Sent Verification Email!", Toast.LENGTH_SHORT).show()
+                                    }?.addOnFailureListener {
+                                        Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
+                                    }
+
                                     val profileUpdates = UserProfileChangeRequest.Builder()
                                         .setDisplayName(username)
                                         .build()
@@ -111,5 +118,7 @@ class SignUp : AppCompatActivity() {
         return pattern.matcher(email).matches()
     }
 
+    private fun emailAuth(){
 
+    }
 }
