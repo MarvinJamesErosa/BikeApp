@@ -10,7 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
 
         <ImageView
             android:id="@+id/signup_title"
@@ -144,38 +145,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/signup_confirm_password" />
 
-        <ImageView
-            android:id="@+id/signup_or_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signup_create_btn"
-            app:srcCompat="@drawable/login_or_text" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/signup_google_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-30dp"
-            android:background="@drawable/login_google_style"
-            android:drawableLeft="@drawable/googleg_standard_color_18"
-            android:drawablePadding="8dp"
-            android:paddingStart="47dp"
-            android:paddingTop="18dp"
-            android:paddingEnd="47dp"
-            android:paddingBottom="18dp"
-            android:text="Sign up with Google"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signup_or_text" />
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_horizontal"
             android:layout_width="wrap_content"
@@ -194,7 +163,6 @@
             android:id="@+id/signup_footer_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_marginBottom="30dp"
             android:text="Already have an account? Sign In"
             android:textAlignment="center"
@@ -204,7 +172,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signup_google_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/signup_create_btn"
+            android:layout_marginTop="20dp"/>
 
         <ImageView
             android:id="@+id/signup_pass_rev"

@@ -375,21 +375,42 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         // Set the text of the "textlocation" TextView to the value of destinedTextViewText
         textLocationTextView?.text = destinedTextViewText
     }
+    // Add a variable to keep track of the inflated view for activity_pedometer.xml
+    //  private var pedometerView: View? = null
 
     fun onGoNowButtonClick(view: View) {
-
         bottomSheetDialog?.let {
             if (it.isShowing) {
                 it.dismiss()
             }
         }
+        startTurnByTurnNavigation()
         // Remove all layouts apart from the map
         removeAllLayoutsApartFromMap()
 
         // Continue with any additional logic you want to perform after the button is clicked
+
+
+      //  if (pedometerView == null) {
+            // Inflate the activity_pedometer.xml layout
+           // pedometerView = layoutInflater.inflate(R.layout.activity_pedometer, null)
+        //}
+
+        // Set the inflated view as the content view for MainActivity
+        //setContentView(pedometerView)
     }
 
 
+    private fun startTurnByTurnNavigation() {
+        if ((startingTextViewText == null || destinedTextViewText == null) && openedSearchFrag) {
+            // Handle the case when the starting location or destined location is not set
+            showDialog("Error", "Please set both starting and destined locations.")
+            return
+        }
+
+        // Fetch directions and draw the route on the map
+        fetchDirections(startingTextViewText!!, destinedTextViewText!!)
+    }
     private fun removeAllLayoutsApartFromMap() {
         // Hide or remove the views you want to remove
         findViewById<Button>(R.id.searchButton).visibility = View.GONE
