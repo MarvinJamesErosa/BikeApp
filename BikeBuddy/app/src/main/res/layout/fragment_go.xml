@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/searchLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="130dp"
         android:background="@color/splashscreen"
         android:elevation="20dp"
         android:orientation="vertical"
@@ -20,8 +20,8 @@
         <FrameLayout
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginLeft="362dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginLeft="365dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/group_7">
 
         </FrameLayout>
@@ -34,20 +34,20 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/gobackbutton"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="2dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="7dp"
                 android:background="@drawable/remove_icon_1"
                 android:backgroundTint="@color/white">
 
             </androidx.appcompat.widget.AppCompatButton>
 
             <ImageView
-                android:layout_width="20dp"
+                android:layout_width="25dp"
                 android:layout_height="80dp"
-                android:layout_marginLeft="35dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginLeft="43dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/bikebuddy_ui_design">
 
             </ImageView>
@@ -58,38 +58,45 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="-103dp">
+            android:layout_marginLeft="76dp"
+            android:layout_marginTop="-122dp">
 
             <TextView
                 android:id="@+id/startinglocation"
-                android:layout_width="300dp"
+                android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/searchviewicon"
+                android:background="@drawable/searchviewbar"
                 android:clickable="true"
                 android:elevation="20dp"
                 android:iconifiedByDefault="false"
-                android:queryHint="Your Location" />
+                android:paddingStart="10sp"
+                android:paddingTop="8sp"
+                android:queryHint="Your Location"
+                android:singleLine="true" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="4dp">
+            android:layout_marginLeft="76dp"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/destinedlocation"
-                android:layout_width="300dp"
+                android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="2dp"
-                android:background="@drawable/searchviewicon"
+                android:background="@drawable/searchviewbar"
                 android:clickable="true"
                 android:elevation="20dp"
                 android:iconifiedByDefault="false"
-                android:queryHint="Where to?" />
+                android:paddingStart="10sp"
+                android:paddingTop="10sp"
+                android:queryHint="Where to?"
+                android:singleLine="true"
+                android:textAlignment="textStart" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -165,7 +172,7 @@
         android:id="@+id/searchButton"
         android:layout_width="360dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="15sp"
         android:background="@drawable/searchviewicon"
         android:drawableRight="@drawable/quantum_ic_search_grey600_24"
         android:elevation="20dp"
@@ -180,9 +187,9 @@
         android:textColor="#FF757575"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.313"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonLayout" />
-
+        app:layout_constraintTop_toBottomOf="@+id/buttonLayout" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/recenterButton"
