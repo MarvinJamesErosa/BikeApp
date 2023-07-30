@@ -17,34 +17,22 @@
             android:id="@+id/idIVCourse"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_below="@id/streetlocatioon"
+            android:layout_below="@id/textlocation"
             android:src="@drawable/baseline_home_24" />
 
         <!--text view for displaying course name-->
         <TextView
             android:id="@+id/textlocation"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="EstablishmentName"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-
+            android:padding="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:textAlignment="center"/>
-
-        <!--text view for displaying course tracks-->
-        <TextView
-            android:id="@+id/streetlocatioon"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_below="@id/textlocation"
-            android:layout_marginTop="10dp"
-            android:text="street"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textAlignment="center"/>
-
-
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/GoNow"
@@ -63,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/GoNow"
             android:layout_margin="10dp"
-            android:text="Share"
+            android:text="Cancel"
             android:textColor="@color/splashscreen"
             android:background="@drawable/searchviewicon"/>
 
