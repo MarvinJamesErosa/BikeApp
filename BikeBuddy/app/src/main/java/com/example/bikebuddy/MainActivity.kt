@@ -142,6 +142,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+
+        // Find the GoNow button inside the bottom sheet view
+        bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet, null)
+
+// Find the GoNow button inside the bottom sheet view
+        val GoNow = bottomSheetView?.findViewById<Button>(R.id.GoNow)
+        GoNow?.setOnClickListener { onGoNowButtonClick(it) }
     }
 
     override fun onBackPressed() {

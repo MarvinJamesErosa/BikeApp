@@ -51,6 +51,7 @@
         app:layout_constraintVertical_bias="0.093" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/saveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/resetbutton"
@@ -65,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailtextview"
         app:layout_constraintVertical_bias="0.888" />
 
-    <TextView
+    <EditText
         android:id="@+id/emailtextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Email*"
+        android:text="Email"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.105"
@@ -90,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/usernametextview"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
+    <EditText
         android:id="@+id/usernametextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Username*"
+        android:text="Full Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.105"
