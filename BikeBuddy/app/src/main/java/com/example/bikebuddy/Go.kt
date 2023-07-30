@@ -19,7 +19,8 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
     private var param1: String? = null
     private var param2: String? = null
     private var bottomSheetView: View? = null
-
+    private var toggleVal: Boolean = false
+    private lateinit var communicator: Communicator
 
 
 
@@ -36,6 +37,8 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_go, container, false)
+
+
         val recenterButton = view.findViewById<Button>(R.id.recenterButton)
         recenterButton.setOnClickListener {
             (activity as MainActivity).centerMapToUserLocation()
@@ -52,16 +55,21 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
         }
-
+        communicator = activity as Communicator
 
         val startinglocation = view.findViewById<TextView>(R.id.startinglocation)
         startinglocation.setOnClickListener {
             openSearchFragment()
+            toggleVal = true
+            communicator.passToggle(toggleVal)
         }
+
 
         val destinedlocation = view.findViewById<TextView>(R.id.destinedlocation)
         destinedlocation.setOnClickListener {
             openSearchFragment()
+            toggleVal = false
+            communicator.passToggle(toggleVal)
         }
 
         val searchButton = view.findViewById<Button>(R.id.searchButton)

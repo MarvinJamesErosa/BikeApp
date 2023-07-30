@@ -46,18 +46,19 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.SearchListener {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.SearchListener, Communicator {
 
     private lateinit var binding: ActivityMainBinding
     private var sharedRoutesPopup: PopupWindow? = null
     private var stringQuery: String? = null
-
+    private var toggleStatus: Boolean = false
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
     private lateinit var locationCallback: LocationCallback
     private lateinit var searchView: SearchView
     private lateinit var placesClient: PlacesClient
-    private var isBottomNavigationViewVisible = true // Track the visibility state of BottomNavigationView
+    private var isBottomNavigationViewVisible =
+        true // Track the visibility state of BottomNavigationView
 
 
     companion object {
@@ -97,7 +98,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        val mapFrag = supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        val mapFrag =
+            supportFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFrag.getMapAsync(this)
 
 
@@ -110,7 +112,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             true
         }
         try {
-            val appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+            val appInfo =
+                packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
             val bundle = appInfo.metaData
             val apiKey = bundle.getString("com.google.android.places.API_KEY")
 
@@ -120,6 +123,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+
     }
 
     override fun onBackPressed() {
@@ -143,6 +147,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         startLocationUpdates()
         centerMapToUserLocation()
     }
+
     // Declare a member variable to hold the reference to the previous marker
     private var previousMarker: Marker? = null
 
@@ -160,7 +165,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                     val prediction = response.autocompletePredictions[0]
                     val placeId = prediction.placeId
 
-                    val placeFields = listOf(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS)
+                    val placeFields = listOf(
+                        Place.Field.NAME,
+                        Place.Field.LAT_LNG,
+                        Place.Field.ADDRESS_COMPONENTS
+                    )
 
                     val placeRequest = FetchPlaceRequest.builder(placeId, placeFields)
                         .build()
@@ -186,6 +195,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                             place.name
                                         }
                                     }
+
                                     else -> {
                                         if (country != null && country != place.name) {
                                             "${place.name}, $city, $country"
@@ -209,25 +219,36 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                         .title(title)
                                 )
                                 previousMarker = newMarker
+
                                 setDestinedLocationText()
+
                                 // Hide or remove the views you want to remove
                                 findViewById<Button>(R.id.searchButton).visibility = View.GONE
                                 // Hide or remove other views as needed
-                                findViewById<BottomNavigationView>(R.id.BottomNavigationView).visibility = View.GONE
+                                findViewById<BottomNavigationView>(R.id.BottomNavigationView).visibility =
+                                    View.GONE
 
-                                findViewById<ImageView>(R.id.account_topbar_text).visibility = View.GONE
+                                findViewById<ImageView>(R.id.account_topbar_text).visibility =
+                                    View.GONE
 
                                 findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
 
-                                findViewById<LinearLayout>(R.id.searchLayout).visibility = View.VISIBLE
+                                findViewById<LinearLayout>(R.id.searchLayout).visibility =
+                                    View.VISIBLE
                             }
                         }
                         .addOnFailureListener { exception: Exception ->
-                            showDialog("Location Not Found", "The location cannot be found or does not exist.")
+                            showDialog(
+                                "Location Not Found",
+                                "The location cannot be found or does not exist."
+                            )
                         }
                 } else {
                     // No predictions found for the location, handle accordingly
-                    showDialog("Location Not Found", "The location cannot be found or does not exist.")
+                    showDialog(
+                        "Location Not Found",
+                        "The location cannot be found or does not exist."
+                    )
                 }
             }
             .addOnFailureListener { exception: Exception ->
@@ -235,7 +256,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             }
     }
 
-    private fun setDestinedLocationText(){
+    private fun setDestinedLocationText() {
         val destinedLocation = findViewById<TextView>(R.id.destinedlocation)
         destinedLocation.text = stringQuery
     }
@@ -278,10 +299,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
-                    if (!zoomedToLocation && locationResult.locations.isNotEmpty())  {
+                    if (!zoomedToLocation && locationResult.locations.isNotEmpty()) {
                         val currentLatLong = LatLng(location.latitude, location.longitude)
                         zoomedToLocation = true
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, DEFAULT_ZOOM))
+                        mMap.moveCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                currentLatLong,
+                                DEFAULT_ZOOM
+                            )
+                        )
                     }
                 }
             }
@@ -371,7 +397,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val sharedRoutesView = inflater.inflate(R.layout.sharedroutespopup, null)
 
-        sharedRoutesPopup = PopupWindow(sharedRoutesView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true)
+        sharedRoutesPopup = PopupWindow(
+            sharedRoutesView,
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT,
+            true
+        )
         sharedRoutesPopup?.showAtLocation(sharedRoutesView, 0, 0, 0)
 
         val closeButton = sharedRoutesView.findViewById<Button>(R.id.closeButton)
@@ -379,4 +410,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             sharedRoutesPopup?.dismiss()
         }
     }
+
+    override fun passToggle(toggleInput: Boolean) {
+        binding.textView.text = toggleInput.toString()
+        toggleStatus = toggleInput
+
+    }
+
 }
+
+
