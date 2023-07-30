@@ -48,6 +48,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.location.Geocoder
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import com.google.android.gms.maps.model.LatLngBounds
 import java.io.IOException
 import com.google.android.gms.maps.model.PolylineOptions
@@ -74,6 +75,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     private var openedSearchFrag: Boolean = false
     private var areTextViewsFilled = false
     private var bottomSheetView: View? = null
+    private var bottomSheetDialog: BottomSheetDialog? = null
+
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 145
@@ -137,6 +140,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+
+        bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet, null)
+
+        // Find the GoNow button inside the bottom sheet view
+        val GoNow = bottomSheetView?.findViewById<Button>(R.id.GoNow)
+        GoNow?.setOnClickListener { onGoNowButtonClick(it) }
+
 
     }
 
@@ -347,13 +357,39 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             parent.removeView(bottomSheetView)
         }
 
+
         // Create a BottomSheetDialog and set the bottom sheet view
-        val bottomSheetDialog = BottomSheetDialog(this) // Use 'this' instead of 'requireContext()'
-        bottomSheetDialog.setContentView(bottomSheetView!!)
+        bottomSheetDialog = BottomSheetDialog(this) // Use 'this' instead of 'requireContext()'
+        bottomSheetDialog?.setContentView(bottomSheetView!!)
 
         // Show the bottom sheet dialog
-        bottomSheetDialog.show()
+        bottomSheetDialog?.show()
     }
+
+    fun onGoNowButtonClick(view: View) {
+
+        bottomSheetDialog?.let {
+            if (it.isShowing) {
+                it.dismiss()
+            }
+        }
+        // Remove all layouts apart from the map
+        removeAllLayoutsApartFromMap()
+
+        // Continue with any additional logic you want to perform after the button is clicked
+    }
+
+
+    private fun removeAllLayoutsApartFromMap() {
+        // Hide or remove the views you want to remove
+        findViewById<Button>(R.id.searchButton).visibility = View.GONE
+        findViewById<BottomNavigationView>(R.id.BottomNavigationView).visibility = View.GONE
+        findViewById<ImageView>(R.id.account_topbar_text).visibility = View.GONE
+        findViewById<LinearLayout>(R.id.buttonLayout).visibility = View.GONE
+        findViewById<LinearLayout>(R.id.searchLayout).visibility = View.GONE
+
+    }
+
 
     private fun fetchTextViewContentForDirections()
     {
@@ -594,5 +630,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     }
 
 }
+
 
 

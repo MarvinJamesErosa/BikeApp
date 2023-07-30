@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomSheet"
-    android:src="@color/white">
+    android:src="@color/white"
+    app:cardBackgroundColor="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,7 +46,7 @@
 
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/GoNow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,9 +54,10 @@
             android:layout_margin="10dp"
             android:text="Go Now"
             android:textColor="@color/white"
-            android:background="@color/splashscreen"/>
+            android:background="@drawable/searchviewicon"
+            android:backgroundTint="@color/splashscreen"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/Share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +65,7 @@
             android:layout_margin="10dp"
             android:text="Share"
             android:textColor="@color/splashscreen"
-            android:background="@color/white"/>
+            android:background="@drawable/searchviewicon"/>
 
     </RelativeLayout>
 
