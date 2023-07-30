@@ -45,6 +45,8 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.location.Geocoder
+import java.io.IOException
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.SearchListener, Communicator {
 
@@ -57,9 +59,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     private lateinit var locationCallback: LocationCallback
     private lateinit var searchView: SearchView
     private lateinit var placesClient: PlacesClient
-    private var isBottomNavigationViewVisible =
-        true // Track the visibility state of BottomNavigationView
-
+    private var isBottomNavigationViewVisible = true // Track the visibility state of BottomNavigationView
+    private var startingTextViewText: String? = null
+    private var destinedTextViewText: String? = null
+    private var openedSearchFrag: Boolean = false
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 145
@@ -151,7 +154,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     // Declare a member variable to hold the reference to the previous marker
     private var previousMarker: Marker? = null
 
-    fun convertLocationToLatLng(location: String) {
+    private fun convertLocationToLatLng(location: String) {
         // Remove the previous marker from the map
         previousMarker?.remove()
 
@@ -220,7 +223,44 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                 )
                                 previousMarker = newMarker
 
-                                setDestinedLocationText()
+
+                                if(toggleStatus)
+                                {
+                                    setStartingLocationText()
+                                    startingTextViewText = stringQuery
+                                }
+                                else if (!toggleStatus && !openedSearchFrag)
+                                {
+                                    openedSearchFrag = true
+                                    checkForLocationPermission()
+                                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                                        location?.let {
+                                            val latLng = LatLng(location.latitude, location.longitude)
+                                            val geocoder = Geocoder(this)
+                                            try {
+                                                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                                                if (addresses?.isNotEmpty() == true) { // Check if the list is not null and not empty
+                                                    val address = addresses[0]
+                                                    val addressText = address.getAddressLine(0)
+                                                    // Place the address on the startingLocationTextView
+                                                    findViewById<TextView>(R.id.startinglocation).text = addressText
+                                                    // Save the starting location text
+                                                    startingTextViewText = addressText
+                                                }
+                                            } catch (e: IOException) {
+                                                e.printStackTrace()
+                                            }
+                                        } ?: run {
+                                            startLocationUpdates()
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    setDestinedLocationText()
+                                    destinedTextViewText = stringQuery
+                                }
+
 
                                 // Hide or remove the views you want to remove
                                 findViewById<Button>(R.id.searchButton).visibility = View.GONE
@@ -259,6 +299,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     private fun setDestinedLocationText() {
         val destinedLocation = findViewById<TextView>(R.id.destinedlocation)
         destinedLocation.text = stringQuery
+    }
+
+    private fun setStartingLocationText() {
+        val startingLocation = findViewById<TextView>(R.id.startinglocation)
+        startingLocation.text = stringQuery
     }
 
     private fun getAddressComponent(components: List<AddressComponent>?, type: String): String? {
