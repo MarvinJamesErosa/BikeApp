@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -74,7 +75,9 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
         val searchButton = view.findViewById<Button>(R.id.searchButton)
         searchButton.setOnClickListener {
             openSearchFragment()
+
         }
+
     }
 
 
@@ -89,6 +92,7 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
         val linearLayout =
             requireActivity().findViewById<LinearLayout>(R.id.searchLayout)
                 linearLayout.visibility = View.GONE
+
     }
 
     override fun onSearch(query: String) {

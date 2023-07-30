@@ -4,17 +4,26 @@
     android:id="@+id/Community"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EDFD0F"
+    android:background="@color/white"
     tools:context=".Community">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="COMMUNITY fragment"
-        android:textSize="30dp"
-        android:layout_gravity="center"/>
+        android:textSize="30dp" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/historysaved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchViewLocation"
+        android:layout_marginTop="60dp"
+        android:background="@color/white"
+        android:padding="8dp" />
 
 
 </FrameLayout>

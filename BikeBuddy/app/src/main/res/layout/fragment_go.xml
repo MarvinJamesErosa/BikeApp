@@ -18,11 +18,11 @@
         tools:ignore="MissingConstraints">
 
         <FrameLayout
+            android:id="@+id/switchtextview"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="365dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/group_7">
+            android:layout_marginTop="20dp">
 
         </FrameLayout>
 
@@ -122,6 +122,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/account_topbar_text">

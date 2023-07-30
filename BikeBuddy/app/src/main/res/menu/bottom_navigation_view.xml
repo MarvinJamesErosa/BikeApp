@@ -4,7 +4,7 @@
     <item android:title="Go"
         android:id="@+id/Gonav"
         android:icon="@drawable/go"/>
-    <item android:title="Community"
+    <item android:title="Coming Soon"
         android:id="@+id/Community"
         android:icon="@drawable/community"/>
     <item android:title="Account"

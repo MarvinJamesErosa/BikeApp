@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.location.*
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.libraries.places.api.Places
@@ -46,7 +47,6 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.location.Geocoder
-import android.net.Uri
 import android.view.ViewGroup
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Polyline
@@ -122,10 +122,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         mapFrag.getMapAsync(this)
 
 
+
         binding.BottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.Gonav -> replaceFragment(Go())
-                R.id.Community -> replaceFragment(Community())
                 R.id.Account -> replaceFragment(Account())
             }
             true
@@ -143,10 +143,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             e.printStackTrace()
         }
 
+
+
         // Find the GoNow button inside the bottom sheet view
         bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet, null)
 
-        // Find the GoNow button inside the bottom sheet view
+    // Find the GoNow button inside the bottom sheet view
         val GoNow = bottomSheetView?.findViewById<Button>(R.id.GoNow)
         GoNow?.setOnClickListener { onGoNowButtonClick(it) }
     }
@@ -233,6 +235,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                                 .position(LatLng(latitude, longitude))
                                                 .title(title)
                                         )
+
                                     }
                                 }
                                 else if(!openedSearchFrag)
@@ -252,7 +255,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                             .title(title)
                                     )
                                     determineTextViewContent()
-
                                 }
 
                                 // Hide or remove the views you want to remove
@@ -345,27 +347,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             showBottomSheetLayout()
         }
     }
-    private fun startTurnByTurnNavigation() {
-        val startingLocationText = findViewById<TextView>(R.id.startinglocation).text.toString()
-        val destinedLocationText = findViewById<TextView>(R.id.destinedlocation).text.toString()
-
-        // Check if both starting and destined locations are available
-        if (startingLocationText.isNotEmpty() && destinedLocationText.isNotEmpty() || !openedSearchFrag) {
-            // Prepare the navigation intent
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=$destinedLocationText&mode=1"))
-            intent.setPackage("com.google.android.apps.maps")
-
-            // Check if Google Maps is available to handle the navigation intent
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            } else {
-                showDialog("Navigation App Not Found", "Google Maps is not installed on your device.")
-            }
-        } else {
-            showDialog("Location Not Set", "Please enter starting and destined locations.")
-        }
-    }
-
 
     private fun showBottomSheetLayout() {
         // Inflate the bottom sheet layout
@@ -387,6 +368,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
         // Show the bottom sheet dialog
         bottomSheetDialog?.show()
+
+        // Find the TextView with ID "textlocation" in the bottomSheetView
+        val textLocationTextView = bottomSheetView?.findViewById<TextView>(R.id.textlocation)
+
+        // Set the text of the "textlocation" TextView to the value of destinedTextViewText
+        textLocationTextView?.text = destinedTextViewText
     }
 
     fun onGoNowButtonClick(view: View) {
@@ -396,7 +383,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                 it.dismiss()
             }
         }
-        startTurnByTurnNavigation()
         // Remove all layouts apart from the map
         removeAllLayoutsApartFromMap()
 
