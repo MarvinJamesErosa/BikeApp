@@ -47,9 +47,11 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.location.Geocoder
+import android.view.ViewGroup
 import com.google.android.gms.maps.model.LatLngBounds
 import java.io.IOException
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.maps.android.PolyUtil
 import okhttp3.*
 import org.json.JSONObject
@@ -70,6 +72,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     private var startingTextViewText: String? = null
     private var destinedTextViewText: String? = null
     private var openedSearchFrag: Boolean = false
+    private var areTextViewsFilled = false
+    private var bottomSheetView: View? = null
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 145
@@ -276,16 +280,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         val startingLocation = findViewById<TextView>(R.id.startinglocation)
         startingLocation.text = stringQuery
     }
-    private fun determineTextViewContent()
-    {
-        if(toggleStatus)
-        {
+    private fun determineTextViewContent() {
+        if (toggleStatus) {
             setStartingLocationText()
             startingTextViewText = stringQuery
             currentLocationMarker?.remove()
-        }
-        else if (!toggleStatus && !openedSearchFrag)
-        {
+        } else if (!toggleStatus && !openedSearchFrag) {
             openedSearchFrag = true
             checkForLocationPermission()
             destinedLocationMarker?.remove()
@@ -302,6 +302,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                             findViewById<TextView>(R.id.startinglocation).text = addressText
                             // Save the starting location text
                             startingTextViewText = addressText
+
+                            // Check if both TextViews have text
+                            areTextViewsFilled = startingTextViewText?.isNotEmpty() == true &&
+                                    destinedTextViewText?.isNotEmpty() == true
                         }
                     } catch (e: IOException) {
                         e.printStackTrace()
@@ -310,14 +314,45 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                     startLocationUpdates()
                 }
             }
-        }
-        else
-        {
+        } else {
             setDestinedLocationText()
             destinedTextViewText = stringQuery
+
+            // Check if both TextViews have text
+            areTextViewsFilled = startingTextViewText?.isNotEmpty() == true &&
+                    destinedTextViewText?.isNotEmpty() == true
         }
+
         mMap.clear()
         fetchTextViewContentForDirections()
+
+        // Show the bottom sheet if both TextViews have text
+        if (areTextViewsFilled) {
+            // Show your bottom sheet here
+            // ...
+            showBottomSheetLayout()
+        }
+    }
+
+    private fun showBottomSheetLayout() {
+        // Inflate the bottom sheet layout
+        if (bottomSheetView == null) {
+            bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet, null)
+        }
+
+        // Check if the bottom sheet view already has a parent
+        val parent = bottomSheetView?.parent
+        if (parent is ViewGroup) {
+            // Remove the bottom sheet view from its parent
+            parent.removeView(bottomSheetView)
+        }
+
+        // Create a BottomSheetDialog and set the bottom sheet view
+        val bottomSheetDialog = BottomSheetDialog(this) // Use 'this' instead of 'requireContext()'
+        bottomSheetDialog.setContentView(bottomSheetView!!)
+
+        // Show the bottom sheet dialog
+        bottomSheetDialog.show()
     }
 
     private fun fetchTextViewContentForDirections()

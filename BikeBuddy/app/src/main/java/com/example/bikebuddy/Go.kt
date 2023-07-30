@@ -18,7 +18,6 @@ private const val ARG_PARAM2 = "param2"
 class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
     private var param1: String? = null
     private var param2: String? = null
-    private var bottomSheetView: View? = null
     private var toggleVal: Boolean = false
     private lateinit var communicator: Communicator
 
@@ -76,22 +75,6 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
         searchButton.setOnClickListener {
             openSearchFragment()
         }
-
-       // val searchView = view.findViewById<SearchView>(R.id.destinedlocation)
-      //  searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-        //    override fun onQueryTextSubmit(query: String): Boolean {
-                // Handle the Enter key press event here
-                // Show the bottom sheet layout
-               // showBottomSheetLayout()
-               // return true
-          //  }
-
-           // override fun onQueryTextChange(newText: String): Boolean {
-                // Handle the text change event if needed
-             //   return false
-          //  }
-        //})
-
     }
 
 
@@ -102,9 +85,6 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
             requireActivity().findViewById<BottomNavigationView>(R.id.BottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
 
-       // val searchView =
-           // requireActivity().findViewById<SearchView>(R.id.destinationlocation)
-              //  searchView.visibility = View.GONE
 
         val linearLayout =
             requireActivity().findViewById<LinearLayout>(R.id.searchLayout)
@@ -130,31 +110,6 @@ class Go : Fragment(), SearchListener, SearchFragment.SearchListener {
             .addToBackStack(null)
             .commit()
     }
-
-
-    private fun showBottomSheetLayout() {
-        // Inflate the bottom sheet layout
-        if (bottomSheetView == null) {
-            bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet, null)
-        }
-
-        // Check if the bottom sheet view already has a parent
-        val parent = bottomSheetView?.parent
-        if (parent is ViewGroup) {
-            // Remove the bottom sheet view from its parent
-            parent.removeView(bottomSheetView)
-        }
-
-        // Create a BottomSheetDialog and set the bottom sheet view
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-        bottomSheetDialog.setContentView(bottomSheetView!!)
-
-        // Show the bottom sheet dialog
-        bottomSheetDialog.show()
-    }
-
-
-
 
 
 
