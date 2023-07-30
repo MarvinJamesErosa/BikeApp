@@ -48,8 +48,8 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.location.Geocoder
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Polyline
 import java.io.IOException
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var mMap: GoogleMap
     private lateinit var locationCallback: LocationCallback
-    private lateinit var searchView: SearchView
     private lateinit var placesClient: PlacesClient
     private var isBottomNavigationViewVisible = true // Track the visibility state of BottomNavigationView
     private var startingTextViewText: String? = null
@@ -75,8 +74,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     private var openedSearchFrag: Boolean = false
     private var areTextViewsFilled = false
     private var bottomSheetView: View? = null
+    private var destinedLocationMarker: Marker? = null
+    private var currentLocationMarker: Marker? = null
+    private var firstLocationMarker: Marker? = null
+    private var currentPolyline: Polyline? = null
     private var bottomSheetDialog: BottomSheetDialog? = null
-
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 145
@@ -140,14 +142,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-
-        bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet, null)
-
-        // Find the GoNow button inside the bottom sheet view
-        val GoNow = bottomSheetView?.findViewById<Button>(R.id.GoNow)
-        GoNow?.setOnClickListener { onGoNowButtonClick(it) }
-
-
     }
 
     override fun onBackPressed() {
@@ -171,10 +165,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         centerMapToUserLocation()
     }
 
-
-    private var destinedLocationMarker: Marker? = null
-    private var currentLocationMarker: Marker? = null
-
     private fun convertLocationToLatLng(location: String) {
         val request = FindAutocompletePredictionsRequest.builder()
             .setQuery(location)
@@ -183,6 +173,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 if (response.autocompletePredictions.isNotEmpty()) {
+                    determineTextViewContent()
                     val prediction = response.autocompletePredictions[0]
                     val placeId = prediction.placeId
 
@@ -228,6 +219,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                 if (toggleStatus && startingTextViewText != null) {
                                     // If the location is the user's current location, show the blue marker
                                     if (title != startingTextViewText) {
+                                        currentLocationMarker?.remove()
                                         // Add a marker for the destined location
                                         currentLocationMarker = mMap.addMarker(
                                             MarkerOptions()
@@ -236,16 +228,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                         )
 
                                     }
-                                } else {
+                                }
+                                else if(!openedSearchFrag)
+                                {
+                                    firstLocationMarker = mMap.addMarker(
+                                        MarkerOptions()
+                                            .position(LatLng(latitude, longitude))
+                                            .title(title))
+                                }
+                                else {
+                                    firstLocationMarker?.remove()
+                                    destinedLocationMarker?.remove()
                                     // Add a marker for the destined location
                                     destinedLocationMarker = mMap.addMarker(
                                         MarkerOptions()
                                             .position(LatLng(latitude, longitude))
                                             .title(title)
                                     )
+                                    determineTextViewContent()
                                 }
-
-                                determineTextViewContent()
 
                                 // Hide or remove the views you want to remove
                                 findViewById<Button>(R.id.searchButton).visibility = View.GONE
@@ -294,11 +295,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         if (toggleStatus) {
             setStartingLocationText()
             startingTextViewText = stringQuery
-            currentLocationMarker?.remove()
         } else if (!toggleStatus && !openedSearchFrag) {
             openedSearchFrag = true
             checkForLocationPermission()
-            destinedLocationMarker?.remove()
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
                     val latLng = LatLng(location.latitude, location.longitude)
@@ -308,12 +307,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                         if (addresses?.isNotEmpty() == true) { // Check if the list is not null and not empty
                             val address = addresses[0]
                             val addressText = address.getAddressLine(0)
-                            // Place the address on the startingLocationTextView
                             findViewById<TextView>(R.id.startinglocation).text = addressText
-                            // Save the starting location text
                             startingTextViewText = addressText
-
-                            // Check if both TextViews have text
                             areTextViewsFilled = startingTextViewText?.isNotEmpty() == true &&
                                     destinedTextViewText?.isNotEmpty() == true
                         }
@@ -333,11 +328,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                     destinedTextViewText?.isNotEmpty() == true
         }
 
-        mMap.clear()
         fetchTextViewContentForDirections()
 
         // Show the bottom sheet if both TextViews have text
-        if (areTextViewsFilled) {
+        if (areTextViewsFilled || !openedSearchFrag)
+        {
             // Show your bottom sheet here
             // ...
             showBottomSheetLayout()
@@ -393,7 +388,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
     private fun fetchTextViewContentForDirections()
     {
-        if (startingTextViewText != null && destinedTextViewText != null) {
+        if ((startingTextViewText != null && destinedTextViewText != null) || !openedSearchFrag) {
             // Fetch directions using Directions API
             fetchDirections(startingTextViewText!!, destinedTextViewText!!)
         }
@@ -455,8 +450,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
             .color(routeColor)
             .width(12f)
             .geodesic(true)
-
-        mMap.addPolyline(polylineOptions)
+        currentPolyline?.remove()
+        // Add the new polyline to the map and store its reference
+        currentPolyline = mMap.addPolyline(polylineOptions)
 
         // Calculate the bounds of the polyline
         val builder = LatLngBounds.Builder()
@@ -466,7 +462,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         val bounds = builder.build()
 
         // Calculate the padding to add to the bounds (optional)
-        val padding = 100 // Adjust this value as needed
+        val padding = 20
 
         // Move the camera to the bounds with padding
         val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
@@ -630,6 +626,5 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     }
 
 }
-
 
 
