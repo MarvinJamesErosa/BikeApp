@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -46,7 +47,13 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.location.Geocoder
+import com.google.android.gms.maps.model.LatLngBounds
 import java.io.IOException
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.android.PolyUtil
+import okhttp3.*
+import org.json.JSONObject
+
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.SearchListener, Communicator {
 
@@ -142,7 +149,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.setInfoWindowAdapter(null)
         checkForLocationPermission()
         mMap.isMyLocationEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = false
@@ -151,13 +157,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         centerMapToUserLocation()
     }
 
-    // Declare a member variable to hold the reference to the previous marker
-    private var previousMarker: Marker? = null
+
+    private var destinedLocationMarker: Marker? = null
+    private var currentLocationMarker: Marker? = null
 
     private fun convertLocationToLatLng(location: String) {
-        // Remove the previous marker from the map
-        previousMarker?.remove()
-
         val request = FindAutocompletePredictionsRequest.builder()
             .setQuery(location)
             .build()
@@ -193,74 +197,41 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
                                 val title = when {
                                     city.isEmpty() || city == place.name || city == country -> {
                                         if (country != null && country != place.name) {
-                                            "${place.name}, $country"
+                                            "${place.name}"
                                         } else {
                                             place.name
                                         }
                                     }
-
                                     else -> {
                                         if (country != null && country != place.name) {
-                                            "${place.name}, $city, $country"
+                                            "${place.name}, $city"
                                         } else {
                                             "${place.name}, $city"
                                         }
                                     }
                                 }
 
-                                val cameraPosition = CameraPosition.Builder()
-                                    .target(LatLng(latitude, longitude))
-                                    .zoom(DEFAULT_ZOOM)
-                                    .build()
-                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-                                previousMarker?.remove()
+                                if (toggleStatus && startingTextViewText != null) {
+                                    // If the location is the user's current location, show the blue marker
+                                    if (title != startingTextViewText) {
+                                        // Add a marker for the destined location
+                                        currentLocationMarker = mMap.addMarker(
+                                            MarkerOptions()
+                                                .position(LatLng(latitude, longitude))
+                                                .title(title)
+                                        )
 
-                                // Add the new marker to the map and store the reference
-                                val newMarker = mMap.addMarker(
-                                    MarkerOptions()
-                                        .position(LatLng(latitude, longitude))
-                                        .title(title)
-                                )
-                                previousMarker = newMarker
-
-
-                                if(toggleStatus)
-                                {
-                                    setStartingLocationText()
-                                    startingTextViewText = stringQuery
-                                }
-                                else if (!toggleStatus && !openedSearchFrag)
-                                {
-                                    openedSearchFrag = true
-                                    checkForLocationPermission()
-                                    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                                        location?.let {
-                                            val latLng = LatLng(location.latitude, location.longitude)
-                                            val geocoder = Geocoder(this)
-                                            try {
-                                                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                                                if (addresses?.isNotEmpty() == true) { // Check if the list is not null and not empty
-                                                    val address = addresses[0]
-                                                    val addressText = address.getAddressLine(0)
-                                                    // Place the address on the startingLocationTextView
-                                                    findViewById<TextView>(R.id.startinglocation).text = addressText
-                                                    // Save the starting location text
-                                                    startingTextViewText = addressText
-                                                }
-                                            } catch (e: IOException) {
-                                                e.printStackTrace()
-                                            }
-                                        } ?: run {
-                                            startLocationUpdates()
-                                        }
                                     }
-                                }
-                                else
-                                {
-                                    setDestinedLocationText()
-                                    destinedTextViewText = stringQuery
+                                } else {
+                                    // Add a marker for the destined location
+                                    destinedLocationMarker = mMap.addMarker(
+                                        MarkerOptions()
+                                            .position(LatLng(latitude, longitude))
+                                            .title(title)
+                                    )
                                 }
 
+                                determineTextViewContent()
 
                                 // Hide or remove the views you want to remove
                                 findViewById<Button>(R.id.searchButton).visibility = View.GONE
@@ -305,6 +276,133 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
         val startingLocation = findViewById<TextView>(R.id.startinglocation)
         startingLocation.text = stringQuery
     }
+    private fun determineTextViewContent()
+    {
+        if(toggleStatus)
+        {
+            setStartingLocationText()
+            startingTextViewText = stringQuery
+            currentLocationMarker?.remove()
+        }
+        else if (!toggleStatus && !openedSearchFrag)
+        {
+            openedSearchFrag = true
+            checkForLocationPermission()
+            destinedLocationMarker?.remove()
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                location?.let {
+                    val latLng = LatLng(location.latitude, location.longitude)
+                    val geocoder = Geocoder(this)
+                    try {
+                        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                        if (addresses?.isNotEmpty() == true) { // Check if the list is not null and not empty
+                            val address = addresses[0]
+                            val addressText = address.getAddressLine(0)
+                            // Place the address on the startingLocationTextView
+                            findViewById<TextView>(R.id.startinglocation).text = addressText
+                            // Save the starting location text
+                            startingTextViewText = addressText
+                        }
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                } ?: run {
+                    startLocationUpdates()
+                }
+            }
+        }
+        else
+        {
+            setDestinedLocationText()
+            destinedTextViewText = stringQuery
+        }
+        mMap.clear()
+        fetchTextViewContentForDirections()
+    }
+
+    private fun fetchTextViewContentForDirections()
+    {
+        if (startingTextViewText != null && destinedTextViewText != null) {
+            // Fetch directions using Directions API
+            fetchDirections(startingTextViewText!!, destinedTextViewText!!)
+        }
+    }
+
+    private fun fetchDirections(origin: String, destination: String) {
+        val apiKey = getString(R.string.google_directions_key)
+        val url = "https://maps.googleapis.com/maps/api/directions/json?" +
+                "origin=${origin.replace(" ", "+")}" +
+                "&destination=${destination.replace(" ", "+")}" +
+                "&key=$apiKey"
+
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    showDialog("Error", "Failed to fetch directions.")
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body?.string()
+                response.body?.close()
+
+                try {
+                    val json = JSONObject(responseData)
+                    val routes = json.getJSONArray("routes")
+                    if (routes.length() > 0) {
+                        val points = routes.getJSONObject(0)
+                            .getJSONObject("overview_polyline")
+                            .getString("points")
+                        val decodedPoints = PolyUtil.decode(points)
+
+                        runOnUiThread {
+                            drawRouteOnMap(decodedPoints)
+                        }
+                    } else {
+                        runOnUiThread {
+                            showDialog("No Routes", "No routes found between the locations.")
+                        }
+                    }
+                } catch (e: Exception) {
+                    runOnUiThread {
+                        showDialog("Error", "Failed to parse response data.")
+                    }
+                }
+            }
+        })
+    }
+
+    private fun drawRouteOnMap(decodedPoints: List<LatLng>) {
+        val routeColor = Color.parseColor("#061BB0") // Specify the desired color here
+        val polylineOptions = PolylineOptions()
+            .addAll(decodedPoints)
+            .color(routeColor)
+            .width(12f)
+            .geodesic(true)
+
+        mMap.addPolyline(polylineOptions)
+
+        // Calculate the bounds of the polyline
+        val builder = LatLngBounds.Builder()
+        for (point in decodedPoints) {
+            builder.include(point)
+        }
+        val bounds = builder.build()
+
+        // Calculate the padding to add to the bounds (optional)
+        val padding = 100 // Adjust this value as needed
+
+        // Move the camera to the bounds with padding
+        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
+        mMap.animateCamera(cameraUpdate)
+    }
+
+
 
     private fun getAddressComponent(components: List<AddressComponent>?, type: String): String? {
         components?.forEach { component ->
@@ -457,9 +555,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, SearchFragment.Sea
     }
 
     override fun passToggle(toggleInput: Boolean) {
-        binding.textView.text = toggleInput.toString()
         toggleStatus = toggleInput
-
     }
 
 }

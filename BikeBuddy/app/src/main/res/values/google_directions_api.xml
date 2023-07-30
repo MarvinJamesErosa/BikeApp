@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_directions_key" templateMergeStrategy="preserve" translatable="false">
+       AIzaSyB-utb8aReIwwnuLaigVjL0HemX7vXw80M
+    </string>
+</resources>
